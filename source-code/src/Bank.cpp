@@ -1,11 +1,22 @@
 #include "Bank.hpp"
 #include <iostream>
 
-Bank::Bank() : bankId("신한은행") {}
+Bank::Bank() 
+: bankId("신한은행"){
+    account.insert(pair<string, int>("12345", 10000)); // test input
+}
 
 // 결제 처리 메서드
+// 1: 성공, 2: 카드 정보 안 맞음, 3: 계좌에 돈이 부족함, -1: 예외상황 발생
+// 예외 상황이 있나?
 int Bank::pay(string cardNum, int cost) {
-    // TODO: 결제 처리
-    // 받아온 cardNum으로 계좌를 확인하는데 그 계좌를 어떤식으로 정의할지
-    return 1;
+    for(auto iter : account){
+        if(iter.first.compare(cardNum) == 0){
+            if(iter.second >= cost){
+                return 1;
+            }
+            else return 3;
+        }
+    }
+    return 2;
 }

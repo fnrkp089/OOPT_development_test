@@ -28,18 +28,13 @@ ItemManager::ItemManager()
 }
 
 // 아이템 목록 보여주기
-/** 아이템 목록 보여주는거를 item 에서 하는게 좋을듯 그래야 getter 함수 줄일수도 있고
- ** 좀 더 객체지향적일 느낌?
-**/
 void ItemManager::showItemList() const {
-    for(int itemId=0; itemId<itemList.size(); itemId++)
-        itemList[itemId].printMenu();
-    // for (const auto& item : itemList) {
-    //     std::cout << "ID: " << item.getItemId()
-    //               << ", Name: " << item.getName()
-    //               << ", Price: " << item.getCost(1)
-    //               << ", Stock: " << item.getStock() << std::endl;
-    // }
+    for(int id=0; id<itemList.size(); id++){
+        std::cout << "ID: " << id+1
+                << ", Name: " << itemList[id].getName()
+                << ", Price: " << itemList[id].getCost(1)
+                << ", Stock: " << itemList[id].getStock() << std::endl;
+    }
 }
 
 // 선택된 아이템 저장
@@ -61,23 +56,9 @@ void ItemManager::minusStock() {
     itemList[selectedItemId-1].decreaseStock(selectedItemNum);
 }
 
-// 선택된 아이템 객체 포인터 반환 (필요 시)
-// Item ItemManager::getSelectedItem(){
-//     itemList[selectedItemId-1].printMenu();
-//     return itemList[selectedItemId-1];
-
-//     // for (auto& item : itemList) {
-//     //     if (item.getItemId() == selectedItemId) {
-//     //         return &item;
-//     //     }
-//     // }
-//     // return nullptr;
-// }
-
 // 구매 결과 출력
 void ItemManager::showBuyResult() {
-    // TODO: 결과 출력 로직
-    itemList[selectedItemId-1].printResult(selectedItemNum);
+    cout << itemList[selectedItemId-1].getName() << " " << selectedItemNum << "개 구매되었습니다." << std::endl;
 }
 
 int ItemManager::getPaymentAmount(){

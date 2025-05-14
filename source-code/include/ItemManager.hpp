@@ -23,8 +23,7 @@ public:
     bool isEnough() const;
     void minusStock();
 
-    // 선택된 아이템에 접근할 수 있도록 Getter 추가 (필요시)
-    //Item getSelectedItem();
+    // 추가 메서드
     void showBuyResult();
     int getPaymentAmount();
 };
