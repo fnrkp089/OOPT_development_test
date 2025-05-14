@@ -1,0 +1,32 @@
+#ifndef ITEMMANAGER_H
+#define ITEMMANAGER_H
+
+#include <vector>
+#include "Item.hpp"
+
+using namespace std;
+
+class ItemManager {
+private:
+    std::vector<Item> itemList;
+    int selectedItemId;
+    // 추가 변수 (몇개를 선택했는지도 알아야함)
+    int selectedItemNum;
+
+public:
+    // 생성자
+    ItemManager();
+
+    // 메서드
+    void showItemList() const;
+    void saveSelectedItem(pair<int, int> saveInfo); // 매개변수 추가
+    bool isEnough() const;
+    void minusStock();
+
+    // 선택된 아이템에 접근할 수 있도록 Getter 추가 (필요시)
+    //Item getSelectedItem();
+    void showBuyResult();
+    int getPaymentAmount();
+};
+
+#endif // ITEMMANAGER_H
