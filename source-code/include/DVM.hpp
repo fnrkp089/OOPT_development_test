@@ -21,7 +21,7 @@ public:
     // 메서드 선언
     string askUserPrepayment();
     pair<int, int> requestSelect();
-    void showPaymentResult(int payResult);
+    int showPaymentResult(int payResult);
     //void showPrepaymentResult(const AuthCode& authCode);
 };
 

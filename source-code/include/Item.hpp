@@ -1,7 +1,10 @@
+// done
 #ifndef ITEM_H
 #define ITEM_H
 
 #include <string>
+
+using namespace std;
 
 class Item {
 private:
@@ -17,11 +20,10 @@ public:
     // Getter
     int getStock() const;
     int getCost(int itemNum) const;
+    string getName() const;
 
     // 추가 메서드
     void decreaseStock(int amount);
-    void printMenu() const;
-    void printResult(int selectedItemNum) const;
 };
 
 #endif // ITEM_H

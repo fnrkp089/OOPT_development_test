@@ -2,13 +2,14 @@
 #define BANK_HPP
 
 #include <string>
+#include <map>
 
 using namespace std;
 
 class Bank {
 private:
     string bankId;
-
+    map<string, int> account;
 public:
     // 생성자
     Bank();
