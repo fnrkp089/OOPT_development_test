@@ -18,8 +18,10 @@ DVM::DVM(const std::string& id, int x, int y)
         // 재고가 충분한 경우
         if(itemManager.isEnough()){
             PaymentManagement pm;
+            int payResult = pm.requestPayment(itemManager.getPaymentAmount());
+            showPaymentResult(payResult);
             // 결제 성공한 경우
-            if(showPaymentResult(pm.requestPayment(itemManager.getPaymentAmount())) == 1){
+            if(payResult == 1){
                 itemManager.minusStock();
                 itemManager.showBuyResult();
             }
@@ -65,7 +67,7 @@ pair<int,int> DVM::requestSelect() {
 }
 
 // 결제 결과 출력
-int DVM::showPaymentResult(int payResult) {
+void DVM::showPaymentResult(int payResult) {
     switch (payResult) {
         case 1:
             std::cout << "결제 성공하였습니다." << std::endl;
@@ -80,7 +82,6 @@ int DVM::showPaymentResult(int payResult) {
             std::cout << "알 수 없는 오류가 발생했습니다." << std::endl;
             break;
     }
-    return payResult;
 }
 
 // // 선결제 결과 출력
