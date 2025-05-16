@@ -6,9 +6,17 @@ PaymentManagement::PaymentManagement() : pmId("temp") {
 
 string PaymentManagement::getCardNum() {
     string cardNum;
-    cout << "카드 번호를 입력해주세요(5자리): ";
-    cin >> cardNum;
-    // TODO: 입력예외처리
+    bool isAvailable = false;
+    while(!isAvailable){
+        cout << "카드 번호를 입력해주세요(5자리): ";
+        cin >> cardNum;
+        if(cardNum.length() == 5){
+            isAvailable = true;
+        }
+        else {
+            cout << "5자리 카드번호로 입력해주세요." << endl;
+        }
+    }
     return cardNum;
 }
 

@@ -10,7 +10,6 @@ class ItemManager {
 private:
     std::vector<Item> itemList;
     int selectedItemId;
-    // 추가 변수 (몇개를 선택했는지도 알아야함)
     int selectedItemNum;
 
 public:
@@ -26,6 +25,8 @@ public:
     // 추가 메서드
     void showBuyResult();
     int getPaymentAmount();
+
+    // CMAKE 테스트용 메서드
 };
 
 #endif // ITEMMANAGER_H

@@ -49,20 +49,48 @@ DVM::DVM(const std::string& id, int x, int y)
 // 음료수의 재고가 부족할 때
 string DVM::askUserPrepayment() {
     string answer;
-    cout << "선결제 하시겠습니까? Yes(y) No(n): ";
-    cin >> answer;
-    // TODO: 입력 예외 처리
+    bool isAvailable = false;
+    while(!isAvailable){
+        cout << "선결제 하시겠습니까? Yes(Y|y) No(N|n): ";
+        cin >> answer;
+        transform(answer.begin(), answer.end(), answer.begin(), ::tolower);
+        if(answer.compare("y") == 0 || answer.compare("n") == 0){
+            isAvailable = true;
+        }
+        else {
+            cout << "Y|y 또는 N|n으로 입력해주세요." << endl;
+        }
+    }
     return answer;
 }
 
 // 항목 선택 요청
 pair<int,int> DVM::requestSelect() {
     pair<int,int> answer;
-    cout << "음료수 번호를 입력해주세요: ";
-    cin >> answer.first;
-    cout << "수량을 입력해주세요: ";
-    cin >> answer.second;
-    // TODO: 입력 예외 처리
+    bool isAvailable = false;
+
+    while(!isAvailable){
+        cout << "음료수 번호를 입력해주세요: ";
+        cin >> answer.first;
+        if(answer.first <= 20 && answer.first >= 1){
+            isAvailable = true;
+        }
+        else{
+            cout << "음료수 번호는 1 ~ 20 사이의 값입니다." << endl;
+        }
+    }
+    isAvailable = false;
+
+    while(!isAvailable){
+        cout << "수량을 입력해주세요: ";
+        cin >> answer.second;
+        if(answer.second <= 99 && answer.second >= 1){
+            isAvailable = true;
+        }
+        else{
+            cout << "음료수 수량은 1~99 까지만 선택 가능합니다." << endl;
+        }
+    }
     return answer;
 }
 
