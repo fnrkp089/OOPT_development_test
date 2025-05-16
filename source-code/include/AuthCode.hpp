@@ -16,7 +16,7 @@ public:
 
     // Getter
     int getCodeId() const;
-    std::string getCode(int codeId) const;
+    std::string getCode();
 };
 
 #endif // AUTHCODE_H

@@ -1,5 +1,4 @@
 #include "AuthCode.hpp"
-#include <iostream>
 
 // 생성자 정의
 AuthCode::AuthCode(int codeId, const std::string& code, int itemId, int itemNum)
@@ -11,6 +10,6 @@ int AuthCode::getCodeId() const {
 }
 
 // 재고 반환
-std::string getCode() const {
+std::string AuthCode::getCode(){
     return code;
 }
