@@ -8,7 +8,7 @@ using namespace std;
 
 class AuthCodeManager {
 private:
-    std::vector<AuthCode> AuthCodeList;
+    std::vector<AuthCode> authCodeList;
 
 public:
     // 생성자
@@ -16,7 +16,7 @@ public:
 
     // 메서드
     AuthCode generateAuthCode() const;
-    void saveAuthCode(int itemId, int itemNum, std::string code);
+    void saveAuthCode(int codeId, std::string& code, int itemId, int itemNum) const;
     bool isValidAuthCode(const std::string& code) const;
     void popAuthCode(int codeId);
 };
