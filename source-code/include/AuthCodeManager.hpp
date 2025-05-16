@@ -16,8 +16,8 @@ public:
 
     // 메서드
     AuthCode generateAuthCode() const;
-    void saveAuthCode(int codeId, std::string& code, int itemId, int itemNum) const;
-    bool isValidAuthCode(const std::string& code) const;
+    void saveAuthCode(int codeId, const std::string& code, int itemId, int itemNum);
+    bool isValidAuthCode(const std::string& code);
     void popAuthCode(int codeId);
 };
 
