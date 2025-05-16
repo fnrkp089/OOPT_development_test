@@ -4,6 +4,7 @@
 #include "ItemManager.hpp"
 #include "PaymentManager.hpp"
 #include <string>
+#include <algorithm>
 //#include "AuthCode.h"
 
 using namespace std;

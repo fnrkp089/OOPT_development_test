@@ -1,23 +1,38 @@
 cmake_minimum_required(VERSION 3.14)
-project(ExpressionEvaluator)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -O0")
-# include 디렉토리 포함
-include_directories(include)
-# GTest를 사용하기 위해 Cmake를 통해 content fetch
+project(DVM)
+
 include(FetchContent)
+
+# GoogleTest 다운로드 및 설정
 FetchContent_Declare(
   googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+  URL https://github.com/google/googletest/archive/refs/heads/main.zip
 )
 FetchContent_MakeAvailable(googletest)
-# 수식 계산기 라이브러리
-add_library(evaluator src/ExpressionEvaluator.cpp)
-# 실행 파일 (main)
-add_executable(expr_main src/main.cpp)
-target_link_libraries(expr_main evaluator)
+
+# 표준 및 디버깅 옵션
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -O0")
+
+# dvm 라이브러리 정의 - 필요한 .cpp 전부 포함
+add_library(dvm
+    src/DVM.cpp
+    src/Item.cpp
+    src/ItemManager.cpp
+    src/Bank.cpp
+    src/PaymentManager.cpp
+)
+
+target_include_directories(dvm PUBLIC include)
+
+# 실행 파일 (메인 프로그램)
+add_executable(dvm_main src/main.cpp)
+target_link_libraries(dvm_main PRIVATE dvm)
+
 # 테스트 설정
 enable_testing()
-add_executable(test_evaluator test/test_evaluator.cpp)
-target_link_libraries(test_evaluator evaluator gtest gtest_main)
-add_test(NAME EvaluatorTests COMMAND test_evaluator)
+
+add_executable(testCode test/testCode.cpp)
+target_link_libraries(testCode PRIVATE dvm gtest gtest_main)
+
+add_test(NAME testCode COMMAND testCode)
