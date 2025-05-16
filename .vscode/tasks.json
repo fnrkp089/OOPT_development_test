@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build OOPT Project",
+        "type": "shell",
+        "command": "clang++",
+        "args": [
+          "-std=c++17",
+          "-Isource-code/include",
+          "source-code/src/main.cpp",
+          "source-code/src/DVM.cpp",
+          "source-code/src/Item.cpp",
+          "source-code/src/ItemManager.cpp",
+          "source-code/src/Bank.cpp",
+          "source-code/src/PaymentManager.cpp",
+          "source-code/src/AuthCode.cpp",
+          "source-code/src/AuthCodeManager.cpp",
+          "-o",
+          "OOPT_TEST"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"]
+      }
+    ]
+  }
