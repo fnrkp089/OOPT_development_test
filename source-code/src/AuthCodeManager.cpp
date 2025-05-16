@@ -7,14 +7,14 @@ AuthCodeManager::AuthCodeManager()
     // 빈 AuthCode 리스트 생성
 }
 
-void AuthCodeManager::saveAuthCode(int codeId, std::string& code, int itemId, int itemNum) const {
+void AuthCodeManager::saveAuthCode(int codeId, const std::string& code, int itemId, int itemNum) {
     authCodeList.emplace_back(codeId, code, itemId, itemNum);
 }
 
 // 해당 인증코드가 존재하는지 확인
-bool AuthCodeManager::isValidAuthCode(const std::string& code) const {
-    for (const auto& authCode : authCodeList) {
-        if (authCode.getCode() == code) {
+bool AuthCodeManager::isValidAuthCode(const std::string& code) {
+    for (int iter = 0; iter<authCodeList.size(); iter++) {
+        if (authCodeList[iter].getCode() == code) {
             return true;
         }
     }
