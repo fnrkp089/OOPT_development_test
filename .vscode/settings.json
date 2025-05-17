@@ -36,6 +36,7 @@
         "vector": "cpp",
         "algorithm": "cpp",
         "deque": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "iostream": "cpp"
     }
 }

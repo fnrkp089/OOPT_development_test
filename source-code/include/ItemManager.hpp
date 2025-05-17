@@ -26,7 +26,10 @@ public:
     void showBuyResult();
     int getPaymentAmount();
 
-    // CMAKE 테스트용 메서드
+    // 구글테스트용 메서드
+    int getselectedItemId();
+    int getselectedItemNum();
+    vector<Item> getItemList();
 };
 
 #endif // ITEMMANAGER_H
