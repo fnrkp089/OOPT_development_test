@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <algorithm>
 
 // 생성자
 AuthCodeManager::AuthCodeManager()
@@ -13,11 +14,11 @@ std::string AuthCodeManager::generateCode() {
     // 인증코드 생성
     srand((unsigned int)time(NULL));
 
-    // 숫자와 대소문자로 구성된 10자리 문자열 저장할 변수
-    char code_str[11];
+    // 숫자와 대소문자로 구성된 5자리 문자열 저장할 변수
+    char code_str[6];
     int type; // 0: 숫자, 1: 소문자, 2: 대문자
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
         type = rand() % 3; // 0, 1, 2 중 랜덤으로 선택
         if (type == 0) {
             code_str[i] = '0' + rand() % 10; // 숫자
@@ -28,7 +29,7 @@ std::string AuthCodeManager::generateCode() {
         }
     }
 
-    code_str[11] = '\0'; // 문자열 종료
+    // code_str[11] = '\0'; // 문자열 종료
 
     std::string code(code_str); // string으로 변환
     
@@ -57,11 +58,12 @@ bool AuthCodeManager::isValidAuthCode(const std::string& code) {
 
 // 사용된 인증 코드 삭제
 AuthCode AuthCodeManager::popAuthCode(const std::string& code) {
-    for (int iter = 0; iter<authCodeList.size(); iter++) {
-        if (authCodeList[iter].getCode() == code) {
-            const AuthCode temp = authCodeList[iter];
-            authCodeList.remove(iter);
+    for (auto iter = authCodeList.begin(); iter != authCodeList.end(); ++iter) {
+        if (iter->getCode() == code) {
+            AuthCode temp = *iter;
+            authCodeList.erase(iter);
             return temp;
         }
     }
+    return AuthCode("errorcode",0,0);
 }
