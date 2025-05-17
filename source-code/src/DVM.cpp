@@ -2,6 +2,7 @@
 #include <iostream>
 
 /** ---- 실행흐름 ----
+ * -- 일반적인 음료수 구매 흐름 --
  * 메뉴 출력 -> 메뉴 선택 -> 재고 확인
  * -> (재고가 충분한 경우) -> 결제 요청
  *                    -> (결제 성공한 경우) -> 재고 감소 -> 구매 결과 출력 -> 종료
@@ -9,40 +10,52 @@
  * -> (재고가 부족한 경우) -> 선결제 여부 확인
  *                    -> (선결제 O)
  *                    -> (선결제 X)
+ * 
+ * -- 사용자가 선결제 코드를 입력 했을때 --
+ * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
  */
 DVM::DVM(const std::string& id, int x, int y)
     : DVMId(id), coorX(x), coorY(y) {
+        bool buyOrCodeInput = askBuyOrCodeInput();
         ItemManager itemManager;
-        itemManager.showItemList();
-        itemManager.saveSelectedItem(requestSelect());
-        // 재고가 충분한 경우
-        if(itemManager.isEnough()){
-            PaymentManagement pm;
-            int payResult = pm.requestPayment(itemManager.getPaymentAmount());
-            showPaymentResult(payResult);
-            // 결제 성공한 경우
-            if(payResult == 1){
-                itemManager.minusStock();
-                itemManager.showBuyResult();
+        // 음료수 구매
+        if(buyOrCodeInput){
+            itemManager.showItemList();
+            itemManager.saveSelectedItem(requestSelect());
+            // 재고가 충분한 경우
+            if(itemManager.isEnough()){
+                PaymentManagement pm;
+                int payResult = pm.requestPayment(itemManager.getPaymentAmount());
+                showPaymentResult(payResult);
+                // 결제 성공한 경우
+                if(payResult == 1){
+                    itemManager.minusStock();
+                    itemManager.showBuyResult();
+                }
+                // 결제 실패한 경우
+                else return;
             }
-            // 결제 실패한 경우
-            else return;
-        }
-        // 재고가 부족한 경우
-        else{
-            // 선결제 O
-            if(askUserPrepayment().compare("y") == 0){
-                // TODO: 선결제 O
-                // test code
-                cout << "선결제 합니다" << endl;
-            }
-            // 선결제 X
+            // 재고가 부족한 경우
             else{
-                // TODO: 선결제 x
-                // test code
-                cout << "선결제 안합니다" << endl;
+                // 선결제 O
+                if(askUserPrepayment().compare("y") == 0){
+                    // TODO: 선결제 O
+                    // test code
+                    cout << "선결제 합니다" << endl;
+                }
+                // 선결제 X
+                else{
+                    // TODO: 선결제 x
+                    // test code
+                    cout << "선결제 안합니다" << endl;
+                }
             }
         }
+        // 인증코드 입력
+        else{
+            
+        }
+
     }
 
 // 선결제 여부 묻기
@@ -113,6 +126,41 @@ void DVM::showPaymentResult(int payResult) {
 }
 
 // // 선결제 결과 출력
-// void DVM::showPrepaymentResult(const AuthCode& authCode) {
-//     // TODO: 인증 코드 및 상태 출력
-// }
+void DVM::showPrepaymentResult(const AuthCode& authCode) {
+    // TODO: 인증 코드 및 상태 출력
+    
+}
+
+// 음료수 구매일 경우 true 반환
+bool DVM::askBuyOrCodeInput(){
+    string answer;
+    bool isAvailable = false;
+    while(!isAvailable){
+        cout << "음료수 구매(1) | 인증코드 입력(2): ";
+        cin >> answer;
+        if(answer.compare("1") == 0 || answer.compare("2") == 0){
+            isAvailable = true;
+        }
+        else {
+            cout << "1 또는 2로 입력해주세요." << endl;
+        }
+    }
+    return answer.compare("1") == 0;
+}
+
+string requestAuthCode(){
+    string answer;
+    bool isAvailable = false;
+    while(!isAvailable){
+        cout << "인증코드를 입력해주세요(5자리):  ";
+        cin >> answer;
+        if(answer.length()==5){
+            isAvailable = true;
+        }
+        else {
+            cout << "5자리 인증코드를 입력해주세요." << endl;
+        }
+    }
+    return answer;
+}
+
