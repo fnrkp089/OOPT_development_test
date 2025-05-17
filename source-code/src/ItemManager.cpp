@@ -64,3 +64,15 @@ void ItemManager::showBuyResult() {
 int ItemManager::getPaymentAmount(){
     return itemList[selectedItemId-1].getCost(selectedItemNum);
 }
+
+// 구글테스트용 메서드
+int ItemManager::getselectedItemId(){
+    return selectedItemId;
+}
+int ItemManager::getselectedItemNum(){
+    return selectedItemNum;
+}
+
+vector<Item> ItemManager::getItemList(){
+    return itemList;
+}
