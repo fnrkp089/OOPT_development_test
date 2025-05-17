@@ -3,9 +3,9 @@
 
 #include "ItemManager.hpp"
 #include "PaymentManager.hpp"
+#include "AuthCodeManager.hpp"
 #include <string>
 #include <algorithm>
-//#include "AuthCode.h"
 
 using namespace std;
 
@@ -16,14 +16,15 @@ private:
     int coorY;
 
 public:
-    // 생성자
     DVM(const string& id, int x, int y);
-
-    // 메서드 선언
     string askUserPrepayment();
     pair<int, int> requestSelect();
     void showPaymentResult(int payResult);
-    //void showPrepaymentResult(const AuthCode& authCode);
+    void showPrepaymentResult(const AuthCode& authCode);
+
+    // 추가 메서드
+    bool askBuyOrCodeInput();
+    string requestAuthCode();
 };
 
 #endif // DVM_H

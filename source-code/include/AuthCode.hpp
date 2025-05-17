@@ -13,7 +13,6 @@ private:
 public:
     // 생성자
     AuthCode(int codeId, const std::string& code, int itemId, int itemNum);
-    AuthCode(const AuthCode& other);
     
     // Getter
     int getCodeId() const;
