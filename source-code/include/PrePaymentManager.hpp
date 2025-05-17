@@ -13,11 +13,9 @@ public:
     // 생성자
     PaymentManagement();
 
-    // 선결제 요청
-    requestPrePayment(std::string dvmId, AuthCode authCode);
-
-    // 선결제 수락
-    acceptPrePayment(AuthCode authCode);
+    // 메서드
+    void requestPrePayment(std::string dvmId, AuthCode authCode); // 선결제 요청
+    void acceptPrePayment(AuthCode authCode); // 선결제 수락
 };
 
 #endif // PREPAYMENTMANAGEMENT_H
