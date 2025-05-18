@@ -22,3 +22,8 @@ int Bank::pay(string cardNum, int cost) {
     }
     return 2;
 }
+
+map<string, int> Bank::getAccount()
+{
+    return account;
+}
