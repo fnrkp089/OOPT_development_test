@@ -17,6 +17,9 @@
           "source-code/src/AuthCode.cpp",
           "source-code/src/AuthCodeManager.cpp",
           "source-code/src/PrePaymentManager.cpp",
+          "source-code/src/AltDVM.cpp",
+          "source-code/src/AltDVMManager.cpp",
+          "source-code/src/AltDVMMsgManager.cpp",
           "-o",
           "OOPT_TEST"
         ],

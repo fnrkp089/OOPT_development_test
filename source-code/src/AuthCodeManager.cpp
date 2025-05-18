@@ -10,6 +10,7 @@ using namespace std;
 AuthCodeManager::AuthCodeManager()
     : authCodeList() {
     // 빈 AuthCode 리스트 생성
+    authCodeList.emplace_back("12345", 1, 1);
 }
 
 string AuthCodeManager::generateCode() {
@@ -52,6 +53,7 @@ void AuthCodeManager::saveAuthCode(const string& code, int itemId, int itemNum) 
 bool AuthCodeManager::isValidAuthCode(const string& code) {
     for (int iter = 0; iter<authCodeList.size(); iter++) {
         if (authCodeList[iter].getCode() == code) {
+            cout << "인증코드가 유효합니다." << endl;
             return true;
         }
     }
@@ -59,13 +61,15 @@ bool AuthCodeManager::isValidAuthCode(const string& code) {
 }
 
 // 사용된 인증 코드 삭제
-AuthCode AuthCodeManager::popAuthCode(const string& code) {
+pair<int,int> AuthCodeManager::popAuthCode(const string& code) {
     for (auto iter = authCodeList.begin(); iter != authCodeList.end(); ++iter) {
         if (iter->getCode() == code) {
             AuthCode temp = *iter;
             authCodeList.erase(iter);
-            return temp;
+            return make_pair(temp.getItemId(), temp.getItemNum());
         }
     }
-    return AuthCode("errorcode",0,0);
+    return make_pair(0,0);
 }
+
+
