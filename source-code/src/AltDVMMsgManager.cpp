@@ -41,9 +41,10 @@ string AltDVMMsgManager::createPrepaymentAvailability(const string& dstId) {
     return oss.str();
 }
 
-string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, const string& authCode) {
-    int itemId = itemManager->getselectedItemId();
-    int itemNum = itemManager->getselectedItemNum();
+string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, AuthCode authCode) {
+    int itemId = authCode.getItemId();
+    int itemNum = authCode.getItemNum();
+    string code = authCode.getCode();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"req_prepay\",\n"
@@ -52,7 +53,7 @@ string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, const stri
         << "  \"msg_content\": {\n"
         << "    \"item_code\": \"" << setw(2) << setfill('0') << itemId << "\",\n"
         << "    \"item_num\": \"" << setw(2) << setfill('0') << itemNum << "\",\n"
-        << "    \"cert_code\": \"" << authCode << "\"\n"
+        << "    \"cert_code\": \"" << code << "\"\n"
         << "  }\n}";
     return oss.str();
 }
@@ -86,7 +87,7 @@ void AltDVMMsgManager::sendPrepaymentAvailability(const string& dstId) {
     sendTo(dstId, createPrepaymentAvailability(dstId));
 }
 
-void AltDVMMsgManager::requestPrepayment(const string& dvmId, const string& authCode) {
+void AltDVMMsgManager::requestPrepayment(const string& dvmId, AuthCode authCode) {
     sendTo(dvmId, createRequestPrepayment(dvmId, authCode));
 }
 
