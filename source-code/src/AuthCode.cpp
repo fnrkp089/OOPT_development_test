@@ -7,7 +7,7 @@ AuthCode::AuthCode(const string& code, int itemId, int itemNum)
     : code(code), itemId(itemId), itemNum(itemNum) {}
 
 // 인증코드 반환
-string AuthCode::getCode(){
+string AuthCode::getCode() const{
     return code;
 }
 

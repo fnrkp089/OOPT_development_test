@@ -9,7 +9,7 @@
 #include "AuthCodeManager.hpp"
 #include "AltDVM.hpp"
 #include "AltDVMManager.hpp"
-#include "AltDVMMsgManager.hpp"
+#include "MsgManager.hpp"
 #include "DVM.hpp"
 
 using namespace std;
@@ -17,20 +17,22 @@ using namespace std;
  * 각 클래스에서 메서드별로 테스트 코드 하나씩
  * 연관되는 테스트 코드는 나중에
  * Item -> 4개
- * ItemManager -> 6게
+ * ItemManager -> 6개
  * Bank -> 5개
  * PaymentManager -> 1개
  * AuthCode -> 3개
  * AuthCodeManager -> 5개
- * AltDVM ->
- * AltDVMManager ->
- * AltDVMMsgManager ->
- * DVM ->
+ * AltDVM -> 3개
+ * AltDVMManager -> 5개
+ * MsgManager -> 0개 (아직 구현 덜됨)
+ * DVM -> 1개
+ * 총 33개
  */
 
 ItemManager itemManager;
 PaymentManager paymentManager;
 AuthCodeManager authCodeManager;
+AltDVMManager altDVMManager(itemManager);
 Bank bank;
 
 // ----- Item.hpp 관련 테스트 코드 -----
@@ -61,13 +63,13 @@ TEST(ItemTest, DecreaseItemStock) {
 // selectedItemId 반환
 TEST(ItemManagerTest, SaveSelectedItemId){
     itemManager.saveSelectedItem(make_pair(1,1));
-    EXPECT_EQ(itemManager.getselectedItemId(), 1);
+    EXPECT_EQ(itemManager.getSelectedItemId(), 1);
 }
 
 // selectedItemNum 반환
 TEST(ItemManagerTest, SaveSelectedItemNum){
     itemManager.saveSelectedItem(make_pair(1,1));
-    EXPECT_EQ(itemManager.getselectedItemNum(), 1);
+    EXPECT_EQ(itemManager.getSelectedItemNum(), 1);
 }
 
 // 재고 확인 TRUE
@@ -189,9 +191,47 @@ TEST(AuthCodeManagerTest, PopAuthCodeNum){
 // ----- AuthCodeManager.hpp 관련 테스트 코드 -----
 
 // ----- AltDVM.hpp 관련 테스트 코드 -----
+TEST(AltDVMTest, GetID){
+    AltDVM altDVM("2", 3, 4);
+    EXPECT_EQ(altDVM.getId(), "2");
+}
+TEST(AltDVMTest, GetLocationX){
+    AltDVM altDVM("2", 3, 4);
+    EXPECT_EQ(altDVM.getLocation().first, 3);
+}
 
-
+TEST(AltDVMTest, GetLocationY){
+    AltDVM altDVM("2", 3, 4);
+    EXPECT_EQ(altDVM.getLocation().second, 4);
+}
 // ----- AltDVM.hpp 관련 테스트 코드 -----
+
+// ----- AltDVMManager.hpp 관련 테스트 코드 -----
+TEST(AltDVMManagerTest, AddDVM1){
+    altDVMManager.addDVM("5", 5, 6, "T");
+    EXPECT_EQ(altDVMManager.getAltDVMList()[3].getId(), "5");
+}
+
+TEST(AltDVMManagerTest, AddDVM2){
+    altDVMManager.addDVM("5", 5, 6, "T");
+    EXPECT_EQ(altDVMManager.getAltDVMList()[3].getLocation(), make_pair(5,6));
+}
+
+TEST(AltDVMManagerTest, SelectAltDVM){
+    altDVMManager.selectAltDVM(1,1);
+    EXPECT_EQ(altDVMManager.getSelectedDVM(), "2");
+}
+
+TEST(AltDVMManagerTest, GetAltDVMLocation){
+    altDVMManager.selectAltDVM(1,1);
+    EXPECT_EQ(altDVMManager.getAltDVMLocation(), make_pair(1,3));
+}
+
+TEST(AltDVMManagerTest, Reset){
+    altDVMManager.reset();
+    EXPECT_EQ(altDVMManager.getAltDVMList().size(), 0);
+}
+// ----- AltDVMManager.hpp 관련 테스트 코드 -----
 
 // ----- DVM.hpp 관련 테스트 코드 -----
 TEST(DVMTest, AskBuyOrCodeInput) {

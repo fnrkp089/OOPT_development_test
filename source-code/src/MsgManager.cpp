@@ -11,8 +11,8 @@ MsgManager::MsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, co
 
 // item 재고와 자판기 위치를 요청하는 메세지 생성
 string MsgManager::createRequestItemStockAndLocation() {
-    int itemId = itemManager.getselectedItemId();
-    int itemNum = itemManager.getselectedItemNum();
+    int itemId = itemManager.getSelectedItemId();
+    int itemNum = itemManager.getSelectedItemNum();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"req_stock\",\n"
@@ -27,8 +27,8 @@ string MsgManager::createRequestItemStockAndLocation() {
 
 // 선결제 가능 여부 응답 메세지 생성
 string MsgManager::createPrepaymentAvailability(const string& dstId) {
-    int itemId = itemManager.getselectedItemId();
-    int itemNum = itemManager.getselectedItemNum();
+    int itemId = itemManager.getSelectedItemId();
+    int itemNum = itemManager.getSelectedItemNum();
     bool available = itemManager.isEnough();
     ostringstream oss;
     oss << "{\n"
@@ -63,8 +63,8 @@ string MsgManager::createRequestPrepayment(const string& dvmId, AuthCode authCod
 
 // item 재고와 자판기 위치를 응답하는 메세지 생성
 string MsgManager::createItemStockAndLocation(const string& dstId, int coorX, int coorY) {
-    int itemId = itemManager.getselectedItemId();
-    int itemNum = itemManager.getselectedItemNum();
+    int itemId = itemManager.getSelectedItemId();
+    int itemNum = itemManager.getSelectedItemNum();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"resp_stock\",\n"
@@ -105,18 +105,18 @@ void MsgManager::sendItemStockAndLocation(const string& requesterId, int coorX, 
 }
 
 void MsgManager::sendTo(const std::string& dstId, const std::string& msg) {
-    std::string ip = altDvmManager.getIp(dstId);   // AltDVMManager에서 DVM의 IP를 받아온다고 가정
-    int port = altDvmManager.getPort(dstId);       // 포트도 마찬가지로
+    //std::string ip = altDvmManager.getIp(dstId);   // AltDVMManager에서 DVM의 IP를 받아온다고 가정
+    //int port = altDvmManager.getPort(dstId);       // 포트도 마찬가지로
 
-    SocketClient client(ip, port);
-    if (client.connectToServer()) {
-        if (!client.sendMessage(msg)) {
-            std::cerr << "[ERROR] 메세지 전송 실패 to " << dstId << endl;
-        } else {
-            std::cout << "[INFO] 메세지 전송 성공 to " << dstId << endl;
-        }
-        client.closeConnection();
-    } else {
-        std::cerr << "[ERROR] " << dstId << " 연결 실패" << endl;
-    }
+    // SocketClient client(ip, port);
+    // if (client.connectToServer()) {
+    //     if (!client.sendMessage(msg)) {
+    //         std::cerr << "[ERROR] 메세지 전송 실패 to " << dstId << endl;
+    //     } else {
+    //         std::cout << "[INFO] 메세지 전송 성공 to " << dstId << endl;
+    //     }
+    //     client.closeConnection();
+    // } else {
+    //     std::cerr << "[ERROR] " << dstId << " 연결 실패" << endl;
+    // }
 }
