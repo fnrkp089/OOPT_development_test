@@ -26,7 +26,7 @@ DVM::DVM(const string& id, int x, int y)
             itemManager.saveSelectedItem(requestSelect());
             // 재고가 충분한 경우
             if(itemManager.isEnough()){
-                PaymentManagement pm;
+                PaymentManager pm;
                 int payResult = pm.requestPayment(itemManager.getPaymentAmount());
                 showPaymentResult(payResult);
                 // 결제 성공한 경우
@@ -42,31 +42,15 @@ DVM::DVM(const string& id, int x, int y)
                 msgManager.requestItemStockAndLocation();
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
-                    // 인증코드 생성
-                    Authcode newAuthCode = authCodeManager.makeAuthCode(
-                        authCodeManager.generateCode(),
-                        itemManager.getSelectedItemIt(),
-                        itemManager.getSelectedItemNum()
-                    );
-
-                    // 대안 자판기에게 선결제 요청 메시지 전송
-                    MsgManager.requestPrepayment(selectedAltDVMId, newAuthCode);
-
-                    showPrepaymentResult(newAuthCode);
+                    string authCode = authCodeManager.generateCode();
+                    string dvmID = altDVMManager.getSelectedDVM();
+                    altDVMMsgManager.requestPrepayment(dvmID, authCodeManager.makeAuthCode(authCode, itemManager.getselectedItemId(),itemManager.getselectedItemNum()));
+                    showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
                 // 선결제 X
                 else{
-                    // 대안 자판기의 ID를 가져옴
-                    string altDVMId = altDVMManager.getSelectedDVM();
-
-                    // AltDVM 리스트 중에서 해당 ID를 가진 자판기의 좌표를 출력
-                    for (const auto& dvm : altDVMManager.DVMList) {
-                        if (dvm.getId() == altDVMId) {
-                            auto [x, y] = dvm.getLocation();
-                            cout << "자판기가 위치한 좌표: (" << x << ", " << y << ")" << endl;
-                            break;
-                        }
-                    }
+                    string authCode = "noprepayment";
+                    showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
             }
         }
@@ -154,9 +138,18 @@ void DVM::showPaymentResult(int payResult) {
 }
 
 // 선결제 결과 출력
-void DVM::showPrepaymentResult(const AuthCode& authCode) {
-    cout << "선결제 완료! 인증코드: " << authCode.getCode() << endl;
-    cout << "음료수 번호: " << authCode.getItemId() << ", 수량: " << authCode.getItemNum() << endl;
+void DVM::showPrepaymentResult(const string authCode, pair<int,int> location) {
+    // 선결제 O
+    if(authCode.compare("noprepayment")!=0){
+        cout << "인증코드는 " << authCode << "입니다." << endl;
+        if(location.first == -1) cout << "대안자판기가 없습니다." << endl;
+        else cout << "대안 자판기의 위치는 " << location.first << "," << location.second << " 입니다." << endl;
+    }
+    // 선결제 X
+    else{
+        if(location.first == -1) cout << "대안자판기가 없습니다." << endl;
+        else cout << "대안 자판기의 위치는 " << location.first << "," << location.second << " 입니다." << endl;
+    }
 }
 
 // 음료수 구매일 경우 true 반환

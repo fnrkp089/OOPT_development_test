@@ -34,3 +34,12 @@ void AltDVMManager::reset() {
     DVMList.clear();
     selectedDVMId.clear();
 }
+
+std::pair<int,int> AltDVMManager::getAltDVMLocation() const{
+    for(int iter = 0; iter<DVMList.size(); iter++){
+        if(DVMList[iter].getId().compare(selectedDVMId)==0){
+            return DVMList[iter].getLocation();
+        }
+    }
+    return {-1,-1};
+}

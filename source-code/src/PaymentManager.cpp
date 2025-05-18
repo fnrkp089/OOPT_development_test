@@ -3,10 +3,10 @@
 
 using namespace std;
 
-PaymentManagement::PaymentManagement() : pmId("temp") {
+PaymentManager::PaymentManager() : pmId("temp") {
 }
 
-string PaymentManagement::getCardNum() {
+string PaymentManager::getCardNum() {
     string cardNum;
     bool isAvailable = false;
     while(!isAvailable){
@@ -23,7 +23,7 @@ string PaymentManagement::getCardNum() {
 }
 
 // 1: 성공, 2: 카드 정보 안 맞음, 3: 계좌에 돈이 부족함, -1: 예외상황 발생
-int PaymentManagement::requestPayment(int cost) {
+int PaymentManager::requestPayment(int cost) {
     Bank bank;
     return bank.pay(getCardNum(), cost);
 }

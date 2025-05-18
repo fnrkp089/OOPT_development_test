@@ -1,16 +1,16 @@
-#ifndef PAYMENTMANAGEMENT_HPP
-#define PAYMENTMANAGEMENT_HPP
+#ifndef PaymentManager_HPP
+#define PaymentManager_HPP
 
 #include "Bank.hpp"
 #include <string>
 
-class PaymentManagement {
+class PaymentManager {
 private:
     std::string pmId;
 
 public:
     // 생성자
-    PaymentManagement();
+    PaymentManager();
 
     // 카드번호를 가져오는 메서드
     std::string getCardNum();
@@ -20,4 +20,4 @@ public:
     int requestPayment(int cost);
 };
 
-#endif // PAYMENTMANAGEMENT_HPP
+#endif // PaymentManager_HPP
