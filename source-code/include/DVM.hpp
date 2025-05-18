@@ -4,7 +4,7 @@
 #include "ItemManager.hpp"
 #include "PaymentManager.hpp"
 #include "AuthCodeManager.hpp"
-#include "AltDVMMsgManager.hpp"
+#include "MsgManager.hpp"
 #include "AltDVMManager.hpp"
 #include <string>
 #include <algorithm>

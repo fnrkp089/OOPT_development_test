@@ -4,7 +4,7 @@
 #include "AltDVMManager.hpp"
 #include <string>
 
-class AltDVMMsgManager {
+class MsgManager {
 private:
     ItemManager itemManager;
     AuthCodeManager authCodeManager;
@@ -12,7 +12,7 @@ private:
     std::string myId;
 
 public:
-    AltDVMMsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, const std::string& selfId);
+    MsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, const std::string& selfId);
 
     std::string createRequestItemStockAndLocation();
     std::string createPrepaymentAvailability(const std::string& dstId);

@@ -19,7 +19,7 @@
           "source-code/src/PrePaymentManager.cpp",
           "source-code/src/AltDVM.cpp",
           "source-code/src/AltDVMManager.cpp",
-          "source-code/src/AltDVMMsgManager.cpp",
+          "source-code/src/MsgManager.cpp",
           "-o",
           "OOPT_TEST"
         ],

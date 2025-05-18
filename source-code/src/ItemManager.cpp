@@ -68,10 +68,10 @@ int ItemManager::getPaymentAmount(){
 }
 
 // 구글테스트용 메서드
-int ItemManager::getselectedItemId(){
+int ItemManager::getSelectedItemId(){
     return selectedItemId;
 }
-int ItemManager::getselectedItemNum(){
+int ItemManager::getSelectedItemNum(){
     return selectedItemNum;
 }
 

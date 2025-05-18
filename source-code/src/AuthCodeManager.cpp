@@ -9,7 +9,7 @@ using namespace std;
 // 생성자
 AuthCodeManager::AuthCodeManager()
     : authCodeList() {
-    // 빈 AuthCode 리스트 생성
+    srand((unsigned int)time(NULL));
     authCodeList.emplace_back("12345", 1, 1);
 }
 
@@ -32,11 +32,9 @@ string AuthCodeManager::generateCode() {
         }
     }
 
-    // code_str[11] = '\0'; // 문자열 종료
+    code_str[5] = '\0'; // 문자열 종료 문자 추가
 
-    string code(code_str); // string으로 변환
-    
-    return code;
+    return string(code_str); // string으로 변환
 }
 
 // 전달용 인증코드 생성
@@ -51,9 +49,8 @@ void AuthCodeManager::saveAuthCode(const string& code, int itemId, int itemNum) 
 
 // 해당 인증코드가 존재하는지 확인
 bool AuthCodeManager::isValidAuthCode(const string& code) {
-    for (int iter = 0; iter<authCodeList.size(); iter++) {
-        if (authCodeList[iter].getCode() == code) {
-            cout << "인증코드가 유효합니다." << endl;
+    for (const auto& authCode : authCodeList) {
+        if (authCode.getCode() == code) {
             return true;
         }
     }
