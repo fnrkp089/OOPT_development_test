@@ -1,4 +1,4 @@
-#include "AltDVMMsgManager.hpp"
+#include "MsgManager.hpp"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -6,11 +6,11 @@
 
 using namespace std;
 
-AltDVMMsgManager::AltDVMMsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, const string& selfId)
+MsgManager::MsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, const string& selfId)
     : itemManager(im), authCodeManager(am), altDvmManager(adm), myId(selfId) {}
 
 // item 재고와 자판기 위치를 요청하는 메세지 생성
-string AltDVMMsgManager::createRequestItemStockAndLocation() {
+string MsgManager::createRequestItemStockAndLocation() {
     int itemId = itemManager.getselectedItemId();
     int itemNum = itemManager.getselectedItemNum();
     ostringstream oss;
@@ -26,7 +26,7 @@ string AltDVMMsgManager::createRequestItemStockAndLocation() {
 }
 
 // 선결제 가능 여부 응답 메세지 생성
-string AltDVMMsgManager::createPrepaymentAvailability(const string& dstId) {
+string MsgManager::createPrepaymentAvailability(const string& dstId) {
     int itemId = itemManager.getselectedItemId();
     int itemNum = itemManager.getselectedItemNum();
     bool available = itemManager.isEnough();
@@ -44,7 +44,7 @@ string AltDVMMsgManager::createPrepaymentAvailability(const string& dstId) {
 }
 
 // 선결제 가능 여부 요청 메세지 생성
-string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, AuthCode authCode) {
+string MsgManager::createRequestPrepayment(const string& dvmId, AuthCode authCode) {
     int itemId = authCode.getItemId();
     int itemNum = authCode.getItemNum();
     string code = authCode.getCode();
@@ -62,7 +62,7 @@ string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, AuthCode a
 }
 
 // item 재고와 자판기 위치를 응답하는 메세지 생성
-string AltDVMMsgManager::createItemStockAndLocation(const string& dstId, int coorX, int coorY) {
+string MsgManager::createItemStockAndLocation(const string& dstId, int coorX, int coorY) {
     int itemId = itemManager.getselectedItemId();
     int itemNum = itemManager.getselectedItemNum();
     ostringstream oss;
@@ -79,30 +79,44 @@ string AltDVMMsgManager::createItemStockAndLocation(const string& dstId, int coo
     return oss.str();
 }
 
-void AltDVMMsgManager::receivePrepayResponse(const string& srcId, const string& availability, int coorX, int coorY) {
+void MsgManager::receivePrepayResponse(const string& srcId, const string& availability, int coorX, int coorY) {
     altDvmManager.addDVM(srcId, coorX, coorY, availability);
 }
 
 // item 재고와 자판기 위치를 요청하는 메세지
-void AltDVMMsgManager::requestItemStockAndLocation() {
+void MsgManager::requestItemStockAndLocation() {
     sendTo("0", createRequestItemStockAndLocation());
 }
 
 // 선결제 가능 여부 응답 메세지
-void AltDVMMsgManager::sendPrepaymentAvailability(const string& dstId) {
+void MsgManager::sendPrepaymentAvailability(const string& dstId) {
     sendTo(dstId, createPrepaymentAvailability(dstId));
 }
 
 // 선결제 가능 여부 요청 메세지
-void AltDVMMsgManager::requestPrepayment(const string& dvmId, AuthCode authCode) {
+void MsgManager::requestPrepayment(const string& dvmId, AuthCode authCode) {
     sendTo(dvmId, createRequestPrepayment(dvmId, authCode));
 }
 
 // item 재고와 자판기 위치를 응답하는 메세지
-void AltDVMMsgManager::sendItemStockAndLocation(const string& requesterId, int coorX, int coorY) {
-    sendTo(requesterId, createItemStockAndLocation(requesterId, coorX, coorY));
+void MsgManager::sendItemStockAndLocation(const string& requesterId, int coorX, int coorY) {
+    string msg = createItemStockAndLocation(requesterId, coorX, coorY);
+    sendTo(requesterId, msg);
 }
 
-void AltDVMMsgManager::sendTo(const string& dstId, const string& msg) {
-    cout << "\n[Sending to " << dstId << "]\n" << msg << endl;
+void MsgManager::sendTo(const std::string& dstId, const std::string& msg) {
+    std::string ip = altDvmManager.getIp(dstId);   // AltDVMManager에서 DVM의 IP를 받아온다고 가정
+    int port = altDvmManager.getPort(dstId);       // 포트도 마찬가지로
+
+    SocketClient client(ip, port);
+    if (client.connectToServer()) {
+        if (!client.sendMessage(msg)) {
+            std::cerr << "[ERROR] 메세지 전송 실패 to " << dstId << endl;
+        } else {
+            std::cout << "[INFO] 메세지 전송 성공 to " << dstId << endl;
+        }
+        client.closeConnection();
+    } else {
+        std::cerr << "[ERROR] " << dstId << " 연결 실패" << endl;
+    }
 }

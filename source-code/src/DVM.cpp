@@ -17,12 +17,9 @@ using namespace std;
  * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
  */
 DVM::DVM(const string& id, int x, int y)
-    : DVMId(id), coorX(x), coorY(y) {
+    : DVMId(id), coorX(x), coorY(y), ItemManager(), authCodeManager(), 
+    altDVMManager(ItemManager), msgManager(ItemManager, authCodeManager, altDVMManager, DVMId) {
         bool buyOrCodeInput = askBuyOrCodeInput();
-        ItemManager itemManager;
-        AuthCodeManager authCodeManager;
-        AltDVMManager altDVMManager(itemManager);
-        AltDVMMsgManager altDVMMsgManager(itemManager,authCodeManager,altDVMManager,DVMId);
         // 음료수 구매
         if(buyOrCodeInput){
             itemManager.showItemList();
@@ -42,7 +39,7 @@ DVM::DVM(const string& id, int x, int y)
             }
             // 재고가 부족한 경우
             else{
-                altDVMMsgManager.requestItemStockAndLocation();
+                msgManager.requestItemStockAndLocation();
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
                     string authCode = authCodeManager.generateCode();

@@ -25,8 +25,8 @@ public:
     int getPaymentAmount();
 
     // 구글테스트용 메서드
-    int getselectedItemId();
-    int getselectedItemNum();
+    int getSelectedItemId();
+    int getSelectedItemNum();
     std::vector<Item> getItemList();
 };
 
