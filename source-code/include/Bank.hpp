@@ -7,7 +7,7 @@
 class Bank {
 private:
     std::string bankId;
-    map<std::string, int> account;
+    std::map<std::string, int> account;
 public:
     // 생성자
     Bank();

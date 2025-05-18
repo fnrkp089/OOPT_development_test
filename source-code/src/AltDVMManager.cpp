@@ -21,16 +21,16 @@ void AltDVMManager::selectAltDVM(int currX, int currY) {
         int dist = (currX - x) * (currX - x) + (currY - y) * (currY - y);
         if (dist < minDist) {
             minDist = dist;
-            selectedDVM = dvm.getId();
+            selectedDVMId = dvm.getId();
         }
     }
 }
 
 string AltDVMManager::getSelectedDVM() const {
-    return selectedDVM;
+    return selectedDVMId;
 }
 
 void AltDVMManager::reset() {
     DVMList.clear();
-    selectedDVM.clear();
+    selectedDVMId.clear();
 }
