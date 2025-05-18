@@ -5,8 +5,6 @@
 #include "AuthCodeManager.hpp"
 #include <string>
 
-using namespace std;
-
 class PrePaymentManager {
 private:
 
@@ -15,7 +13,7 @@ public:
     PrePaymentManager();
 
     // 메서드
-    void requestPrePayment(string dvmId, const AuthCode& authCode); // 선결제 요청
+    void requestPrePayment(std::string dvmId, const AuthCode& authCode); // 선결제 요청
     void acceptPrePayment(const AuthCode& authCode); // 선결제 수락
 };
 

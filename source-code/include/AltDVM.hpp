@@ -5,8 +5,8 @@
 class AltDVM {
 private:
     std::string DVMId;
-    int coordX;
-    int coordY;
+    int coorX;
+    int coorY;
 
 public:
     AltDVM(const std::string& id, int x, int y);

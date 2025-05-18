@@ -1,5 +1,7 @@
 #include "AuthCode.hpp"
 
+using namespace std;
+
 // 생성자 정의
 AuthCode::AuthCode(const string& code, int itemId, int itemNum)
     : code(code), itemId(itemId), itemNum(itemNum) {}
