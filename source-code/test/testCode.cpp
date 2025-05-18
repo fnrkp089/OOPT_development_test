@@ -59,7 +59,6 @@ TEST(ItemTest, DecreaseItemStock) {
 // ----- Item.hpp 관련 테스트 코드 -----
 
 // ----- ItemManager.hpp 관련 테스트 코드 -----
-
 // selectedItemId 반환
 TEST(ItemManagerTest, SaveSelectedItemId){
     itemManager.saveSelectedItem(make_pair(1,1));
@@ -96,6 +95,7 @@ TEST(ItemManagerTest, GetPaymentAmount){
     itemManager.saveSelectedItem(make_pair(1,1));
     EXPECT_EQ(itemManager.getPaymentAmount(), 1500);
 }
+// ----- ItemManager.hpp 관련 테스트 코드 -----
 
 // ----- Bank.hpp 관련 테스트 코드 -----
 // 결제 성공
