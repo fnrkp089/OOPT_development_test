@@ -29,7 +29,7 @@ DVM::DVM(const string& id, int x, int y)
             itemManager.saveSelectedItem(requestSelect());
             // 재고가 충분한 경우
             if(itemManager.isEnough()){
-                PaymentManagement pm;
+                PaymentManager pm;
                 int payResult = pm.requestPayment(itemManager.getPaymentAmount());
                 showPaymentResult(payResult);
                 // 결제 성공한 경우
@@ -45,16 +45,15 @@ DVM::DVM(const string& id, int x, int y)
                 altDVMMsgManager.requestItemStockAndLocation();
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
-                    // TODO: 선결제 O
-
-                    // test code
-                    cout << "선결제 합니다" << endl;
+                    string authCode = authCodeManager.generateCode();
+                    string dvmID = altDVMManager.getSelectedDVM();
+                    altDVMMsgManager.requestPrepayment(dvmID, authCodeManager.makeAuthCode(authCode, itemManager.getselectedItemId(),itemManager.getselectedItemNum()));
+                    showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
                 // 선결제 X
                 else{
-                    // TODO: 선결제 x
-                    // test code
-                    cout << "선결제 안합니다" << endl;
+                    string authCode = "noprepayment";
+                    showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
             }
         }
@@ -142,9 +141,18 @@ void DVM::showPaymentResult(int payResult) {
 }
 
 // 선결제 결과 출력
-void DVM::showPrepaymentResult(const AuthCode& authCode) {
-    // TODO: 인증 코드 및 상태 출력
-    
+void DVM::showPrepaymentResult(const string authCode, pair<int,int> location) {
+    // 선결제 O
+    if(authCode.compare("noprepayment")!=0){
+        cout << "인증코드는 " << authCode << "입니다." << endl;
+        if(location.first == -1) cout << "대안자판기가 없습니다." << endl;
+        else cout << "대안 자판기의 위치는 " << location.first << "," << location.second << " 입니다." << endl;
+    }
+    // 선결제 X
+    else{
+        if(location.first == -1) cout << "대안자판기가 없습니다." << endl;
+        else cout << "대안 자판기의 위치는 " << location.first << "," << location.second << " 입니다." << endl;
+    }
 }
 
 // 음료수 구매일 경우 true 반환
