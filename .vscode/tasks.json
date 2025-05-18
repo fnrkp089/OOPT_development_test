@@ -16,10 +16,10 @@
           "source-code/src/PaymentManager.cpp",
           "source-code/src/AuthCode.cpp",
           "source-code/src/AuthCodeManager.cpp",
-          "source-code/src/PrePaymentManager.cpp",
           "source-code/src/AltDVM.cpp",
           "source-code/src/AltDVMManager.cpp",
           "source-code/src/MsgManager.cpp",
+          "source-code/src/SocketClient.cpp",
           "-o",
           "OOPT_TEST"
         ],

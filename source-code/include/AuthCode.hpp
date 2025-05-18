@@ -14,7 +14,7 @@ public:
     AuthCode(const std::string& code, int itemId, int itemNum);
   
     // Getter
-    std::string getCode();
+    std::string getCode() const;
     int getItemId();
     int getItemNum();
 };

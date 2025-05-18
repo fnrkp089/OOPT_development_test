@@ -17,4 +17,7 @@ public:
     std::string getSelectedDVM() const;
     std::pair<int,int> getAltDVMLocation() const;
     void reset();
+
+    // google test용 메서드
+    std::vector<AltDVM> getAltDVMList();
 };

@@ -17,8 +17,12 @@ using namespace std;
  * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
  */
 DVM::DVM(const string& id, int x, int y)
-    : DVMId(id), coorX(x), coorY(y), ItemManager(), authCodeManager(), 
-    altDVMManager(ItemManager), msgManager(ItemManager, authCodeManager, altDVMManager, DVMId) {
+    : DVMId(id), coorX(x), coorY(y) {
+        ItemManager itemManager;
+        PaymentManager paymentManager;
+        AuthCodeManager authCodeManager;
+        AltDVMManager altDVMManager(itemManager);
+        MsgManager msgManager(itemManager, authCodeManager, altDVMManager, "1");
         bool buyOrCodeInput = askBuyOrCodeInput();
         // 음료수 구매
         if(buyOrCodeInput){
@@ -26,8 +30,7 @@ DVM::DVM(const string& id, int x, int y)
             itemManager.saveSelectedItem(requestSelect());
             // 재고가 충분한 경우
             if(itemManager.isEnough()){
-                PaymentManager pm;
-                int payResult = pm.requestPayment(itemManager.getPaymentAmount());
+                int payResult = paymentManager.requestPayment(itemManager.getPaymentAmount());
                 showPaymentResult(payResult);
                 // 결제 성공한 경우
                 if(payResult == 1){
@@ -40,16 +43,18 @@ DVM::DVM(const string& id, int x, int y)
             // 재고가 부족한 경우
             else{
                 msgManager.requestItemStockAndLocation();
+                altDVMManager.selectAltDVM(x,y);
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
                     string authCode = authCodeManager.generateCode();
                     string dvmID = altDVMManager.getSelectedDVM();
-                    altDVMMsgManager.requestPrepayment(dvmID, authCodeManager.makeAuthCode(authCode, itemManager.getselectedItemId(),itemManager.getselectedItemNum()));
+                    msgManager.requestPrepayment(dvmID, authCodeManager.makeAuthCode(authCode, itemManager.getSelectedItemId(),itemManager.getSelectedItemNum()));
                     showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
                 // 선결제 X
                 else{
                     string authCode = "noprepayment";
+                    string dvmID = altDVMManager.getSelectedDVM();
                     showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
                 }
             }
@@ -67,7 +72,6 @@ DVM::DVM(const string& id, int x, int y)
             // 인증코드 객체에 담겨있는 정보로 음료수 제공
             itemManager.showBuyResult();
         }
-
     }
 
 // 선결제 여부 묻기
