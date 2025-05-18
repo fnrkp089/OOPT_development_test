@@ -4,6 +4,8 @@
 #include <time.h>
 #include <algorithm>
 
+using namespace std;
+
 // 생성자
 AuthCodeManager::AuthCodeManager()
     : authCodeList() {

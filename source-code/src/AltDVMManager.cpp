@@ -2,18 +2,20 @@
 #include <cmath>
 #include <limits>
 
+using namespace std;
+
 AltDVMManager::AltDVMManager(ItemManager* im) : itemManager(im) {}
 
-void AltDVMManager::addDVM(const std::string& dvmId, int coordX, int coordY, const std::string& availability) {
+void AltDVMManager::addDVM(const string& dvmId, int coorX, int coorY, const string& availability) {
     if (availability == "T") {
-        DVMList.emplace_back(dvmId, coordX, coordY);
+        DVMList.emplace_back(dvmId, coorX, coorY);
     }
 }
 
 void AltDVMManager::selectAltDVM(int currX, int currY) {
     if (DVMList.empty()) return;
 
-    int minDist = std::numeric_limits<int>::max();
+    int minDist = numeric_limits<int>::max();
     for (auto& dvm : DVMList) {
         auto [x, y] = dvm.getLocation();
         int dist = (currX - x) * (currX - x) + (currY - y) * (currY - y);
@@ -24,7 +26,7 @@ void AltDVMManager::selectAltDVM(int currX, int currY) {
     }
 }
 
-std::string AltDVMManager::getSelectedDVM() const {
+string AltDVMManager::getSelectedDVM() const {
     return selectedDVM;
 }
 

@@ -1,8 +1,10 @@
 #include "Item.hpp"
 #include <iostream>
 
+using namespace std;
+
 // 생성자 정의
-Item::Item(int itemId, const std::string& name, int cost, int stock)
+Item::Item(int itemId, const string& name, int cost, int stock)
     : itemId(itemId), name(name), cost(cost), stock(stock) {}
 
 // 재고 반환

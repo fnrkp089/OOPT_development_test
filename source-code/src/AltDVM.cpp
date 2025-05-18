@@ -1,12 +1,14 @@
 #include "AltDVM.hpp"
 
-AltDVM::AltDVM(const std::string& id, int x, int y)
-    : DVMId(id), coordX(x), coordY(y) {}
+using namespace std;
 
-std::string AltDVM::getId() const {
+AltDVM::AltDVM(const string& id, int x, int y)
+    : DVMId(id), coorX(x), coorY(y) {}
+
+string AltDVM::getId() const {
     return DVMId;
 }
 
-std::pair<int, int> AltDVM::getLocation() const {
-    return {coordX, coordY};
+pair<int, int> AltDVM::getLocation() const {
+    return {coorX, coorY};
 }
