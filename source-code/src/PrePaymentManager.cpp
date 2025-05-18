@@ -1,5 +1,7 @@
 #include "PrePaymentManager.hpp"
 
+using namespace std;
+
 // 생성자
 PrePaymentManager::PrePaymentManager() {
     // 생성자 구현

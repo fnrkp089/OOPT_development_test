@@ -1,6 +1,8 @@
 #include "ItemManager.hpp"
 #include <iostream>
 
+using namespace std;
+
 // 생성자
 ItemManager::ItemManager()
     : selectedItemId(0), selectedItemNum(0) {

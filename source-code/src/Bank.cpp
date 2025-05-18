@@ -1,6 +1,8 @@
 #include "Bank.hpp"
 #include <iostream>
 
+using namespace std;
+
 Bank::Bank() 
 : bankId("신한은행"){
     account.insert(pair<string, int>("12345", 10000)); // test input

@@ -1,6 +1,8 @@
 #include "PaymentManager.hpp"
 #include <iostream>
 
+using namespace std;
+
 PaymentManagement::PaymentManagement() : pmId("temp") {
 }
 

@@ -3,20 +3,18 @@
 
 #include <string>
 
-using namespace std;
-
 class AuthCode {
 private:
-    string code;
+    std::string code;
     int itemId;
     int itemNum;
 
 public:
     // 생성자
-    AuthCode(const string& code, int itemId, int itemNum);
+    AuthCode(const std::string& code, int itemId, int itemNum);
   
     // Getter
-    string getCode();
+    std::string getCode();
     int getItemId();
     int getItemNum();
 };

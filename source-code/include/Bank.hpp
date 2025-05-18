@@ -4,18 +4,16 @@
 #include <string>
 #include <map>
 
-using namespace std;
-
 class Bank {
 private:
-    string bankId;
-    map<string, int> account;
+    std::string bankId;
+    map<std::string, int> account;
 public:
     // 생성자
     Bank();
 
     // 결제 메서드
-    int pay(string cardNum, int cost);
+    int pay(std::string cardNum, int cost);
 };
 
 #endif // BANK_HPP

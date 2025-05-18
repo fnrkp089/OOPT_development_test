@@ -4,11 +4,9 @@
 #include <vector>
 #include "Item.hpp"
 
-using namespace std;
-
 class ItemManager {
 private:
-    vector<Item> itemList;
+    std::vector<Item> itemList;
     int selectedItemId;
     int selectedItemNum;
 
@@ -18,7 +16,7 @@ public:
 
     // 메서드
     void showItemList() const;
-    void saveSelectedItem(pair<int, int> saveInfo); // 매개변수 추가
+    void saveSelectedItem(std::pair<int, int> saveInfo); // 매개변수 추가
     bool isEnough() const;
     void minusStock();
 
@@ -29,7 +27,7 @@ public:
     // 구글테스트용 메서드
     int getselectedItemId();
     int getselectedItemNum();
-    vector<Item> getItemList();
+    std::vector<Item> getItemList();
 };
 
 #endif // ITEMMANAGER_H

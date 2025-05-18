@@ -1,6 +1,8 @@
 #include "DVM.hpp"
 #include <iostream>
 
+using namespace std;
+
 /** ---- 실행흐름 ----
  * -- 일반적인 음료수 구매 흐름 --
  * 메뉴 출력 -> 메뉴 선택 -> 재고 확인

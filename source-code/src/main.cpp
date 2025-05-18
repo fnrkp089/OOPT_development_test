@@ -3,6 +3,8 @@
 #include "DVM.hpp"
 #include <iostream>
 
+using namespace std;
+
 int main() {
     DVM dvm("1",2,3);
 
