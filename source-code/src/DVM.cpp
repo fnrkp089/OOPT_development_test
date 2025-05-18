@@ -9,9 +9,9 @@ using namespace std;
  * -> (재고가 충분한 경우) -> 결제 요청
  *                    -> (결제 성공한 경우) -> 재고 감소 -> 구매 결과 출력 -> 종료
  *                    -> (결제 실패한 경우) -> 실패 이유 출력 -> 종료
- * -> (재고가 부족한 경우) -> 선결제 여부 확인
- *                    -> (선결제 O)
- *                    -> (선결제 X)
+ * -> (재고가 부족한 경우) -> 대안 자판기 탐색 -> 선결제 여부 확인
+ *                    -> (선결제 O) -> 인증코드 생성 -> 대안자판기에게 전달
+ *                    -> (선결제 X) -> 대안 자판기 위치 출력
  * 
  * -- 사용자가 선결제 코드를 입력 했을때 --
  * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
@@ -21,6 +21,8 @@ DVM::DVM(const string& id, int x, int y)
         bool buyOrCodeInput = askBuyOrCodeInput();
         ItemManager itemManager;
         AuthCodeManager authCodeManager;
+        AltDVMManager altDVMManager(itemManager);
+        AltDVMMsgManager altDVMMsgManager(itemManager,authCodeManager,altDVMManager,DVMId);
         // 음료수 구매
         if(buyOrCodeInput){
             itemManager.showItemList();
@@ -40,9 +42,11 @@ DVM::DVM(const string& id, int x, int y)
             }
             // 재고가 부족한 경우
             else{
+                altDVMMsgManager.requestItemStockAndLocation();
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
                     // TODO: 선결제 O
+
                     // test code
                     cout << "선결제 합니다" << endl;
                 }

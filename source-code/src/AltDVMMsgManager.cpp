@@ -6,12 +6,13 @@
 
 using namespace std;
 
-AltDVMMsgManager::AltDVMMsgManager(ItemManager* im, AuthCodeManager* am, AltDVMManager* adm, const string& selfId)
+AltDVMMsgManager::AltDVMMsgManager(ItemManager im, AuthCodeManager am, AltDVMManager adm, const string& selfId)
     : itemManager(im), authCodeManager(am), altDvmManager(adm), myId(selfId) {}
 
+// item 재고와 자판기 위치를 요청하는 메세지 생성
 string AltDVMMsgManager::createRequestItemStockAndLocation() {
-    int itemId = itemManager->getselectedItemId();
-    int itemNum = itemManager->getselectedItemNum();
+    int itemId = itemManager.getselectedItemId();
+    int itemNum = itemManager.getselectedItemNum();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"req_stock\",\n"
@@ -24,10 +25,11 @@ string AltDVMMsgManager::createRequestItemStockAndLocation() {
     return oss.str();
 }
 
+// 선결제 가능 여부 응답 메세지 생성
 string AltDVMMsgManager::createPrepaymentAvailability(const string& dstId) {
-    int itemId = itemManager->getselectedItemId();
-    int itemNum = itemManager->getselectedItemNum();
-    bool available = itemManager->isEnough();
+    int itemId = itemManager.getselectedItemId();
+    int itemNum = itemManager.getselectedItemNum();
+    bool available = itemManager.isEnough();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"resp_prepay\",\n"
@@ -41,6 +43,7 @@ string AltDVMMsgManager::createPrepaymentAvailability(const string& dstId) {
     return oss.str();
 }
 
+// 선결제 가능 여부 요청 메세지 생성
 string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, AuthCode authCode) {
     int itemId = authCode.getItemId();
     int itemNum = authCode.getItemNum();
@@ -58,9 +61,10 @@ string AltDVMMsgManager::createRequestPrepayment(const string& dvmId, AuthCode a
     return oss.str();
 }
 
+// item 재고와 자판기 위치를 응답하는 메세지 생성
 string AltDVMMsgManager::createItemStockAndLocation(const string& dstId, int coorX, int coorY) {
-    int itemId = itemManager->getselectedItemId();
-    int itemNum = itemManager->getselectedItemNum();
+    int itemId = itemManager.getselectedItemId();
+    int itemNum = itemManager.getselectedItemNum();
     ostringstream oss;
     oss << "{\n"
         << "  \"msg_type\": \"resp_stock\",\n"
@@ -76,21 +80,25 @@ string AltDVMMsgManager::createItemStockAndLocation(const string& dstId, int coo
 }
 
 void AltDVMMsgManager::receivePrepayResponse(const string& srcId, const string& availability, int coorX, int coorY) {
-    altDvmManager->addDVM(srcId, coorX, coorY, availability);
+    altDvmManager.addDVM(srcId, coorX, coorY, availability);
 }
 
+// item 재고와 자판기 위치를 요청하는 메세지
 void AltDVMMsgManager::requestItemStockAndLocation() {
     sendTo("0", createRequestItemStockAndLocation());
 }
 
+// 선결제 가능 여부 응답 메세지
 void AltDVMMsgManager::sendPrepaymentAvailability(const string& dstId) {
     sendTo(dstId, createPrepaymentAvailability(dstId));
 }
 
+// 선결제 가능 여부 요청 메세지
 void AltDVMMsgManager::requestPrepayment(const string& dvmId, AuthCode authCode) {
     sendTo(dvmId, createRequestPrepayment(dvmId, authCode));
 }
 
+// item 재고와 자판기 위치를 응답하는 메세지
 void AltDVMMsgManager::sendItemStockAndLocation(const string& requesterId, int coorX, int coorY) {
     sendTo(requesterId, createItemStockAndLocation(requesterId, coorX, coorY));
 }
