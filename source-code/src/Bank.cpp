@@ -9,16 +9,17 @@ Bank::Bank()
 }
 
 // 결제 처리 메서드
-// 1: 성공, 2: 카드 정보 안 맞음, 3: 계좌에 돈이 부족함, -1: 예외상황 발생
+// 1: 결제 성공, 2: 카드 정보 없음, 3: 잔액 부족, -1: 예외상황 발생
 // 예외 상황이 있나?
-int Bank::pay(string cardNum, int cost) {
-    for(auto iter : account){
-        if(iter.first.compare(cardNum) == 0){
+int Bank::pay(const string& cardNum, int cost) {
+    for(auto& iter : account){
+        if(iter.first == cardNum){
             if(iter.second >= cost){
-                return 1;
+                //iter.second -= cost; // 잔액 차감
+                return 1; // 결제 성공
             }
-            else return 3;
+            else return 3; // 잔액 부족
         }
     }
-    return 2;
+    return 2; // 카드 정보 없음
 }

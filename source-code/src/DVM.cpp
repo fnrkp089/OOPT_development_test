@@ -17,12 +17,9 @@ using namespace std;
  * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
  */
 DVM::DVM(const string& id, int x, int y)
-    : DVMId(id), coorX(x), coorY(y) {
+    : DVMId(id), coorX(x), coorY(y), ItemManager(), authCodeManager(), 
+    altDVMManager(ItemManager), msgManager(ItemManager, authCodeManager, altDVMManager, DVMId) {
         bool buyOrCodeInput = askBuyOrCodeInput();
-        ItemManager itemManager;
-        AuthCodeManager authCodeManager;
-        AltDVMManager altDVMManager(itemManager);
-        AltDVMMsgManager altDVMMsgManager(itemManager,authCodeManager,altDVMManager,DVMId);
         // 음료수 구매
         if(buyOrCodeInput){
             itemManager.showItemList();
@@ -42,19 +39,34 @@ DVM::DVM(const string& id, int x, int y)
             }
             // 재고가 부족한 경우
             else{
-                altDVMMsgManager.requestItemStockAndLocation();
+                msgManager.requestItemStockAndLocation();
                 // 선결제 O
                 if(askUserPrepayment().compare("y") == 0){
-                    // TODO: 선결제 O
+                    // 인증코드 생성
+                    Authcode newAuthCode = authCodeManager.makeAuthCode(
+                        authCodeManager.generateCode(),
+                        itemManager.getSelectedItemIt(),
+                        itemManager.getSelectedItemNum()
+                    );
 
-                    // test code
-                    cout << "선결제 합니다" << endl;
+                    // 대안 자판기에게 선결제 요청 메시지 전송
+                    MsgManager.requestPrepayment(selectedAltDVMId, newAuthCode);
+
+                    showPrepaymentResult(newAuthCode);
                 }
                 // 선결제 X
                 else{
-                    // TODO: 선결제 x
-                    // test code
-                    cout << "선결제 안합니다" << endl;
+                    // 대안 자판기의 ID를 가져옴
+                    string altDVMId = altDVMManager.getSelectedDVM();
+
+                    // AltDVM 리스트 중에서 해당 ID를 가진 자판기의 좌표를 출력
+                    for (const auto& dvm : altDVMManager.DVMList) {
+                        if (dvm.getId() == altDVMId) {
+                            auto [x, y] = dvm.getLocation();
+                            cout << "자판기가 위치한 좌표: (" << x << ", " << y << ")" << endl;
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -143,8 +155,8 @@ void DVM::showPaymentResult(int payResult) {
 
 // 선결제 결과 출력
 void DVM::showPrepaymentResult(const AuthCode& authCode) {
-    // TODO: 인증 코드 및 상태 출력
-    
+    cout << "선결제 완료! 인증코드: " << authCode.getCode() << endl;
+    cout << "음료수 번호: " << authCode.getItemId() << ", 수량: " << authCode.getItemNum() << endl;
 }
 
 // 음료수 구매일 경우 true 반환
