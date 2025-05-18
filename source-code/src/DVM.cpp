@@ -57,14 +57,12 @@ DVM::DVM(const string& id, int x, int y)
             const string code = requestAuthCode();
             // 인증코드 확인
             if(authCodeManager.isValidAuthCode(code)) {
-                const Authcode authcode = authCodeManager.popAuthCode(code);
+                itemManager.saveSelectedItem(authCodeManager.popAuthCode(code));
             } else {
                 cout << "해당 인증코드가 존재하지 않습니다." << endl;
                 return;
             }
-
             // 인증코드 객체에 담겨있는 정보로 음료수 제공
-            itemManager.saveSelectedItem(make_pair(authCode.getItemId(), authCode.getItemNum()));
             itemManager.showBuyResult();
         }
 
@@ -160,7 +158,7 @@ bool DVM::askBuyOrCodeInput(){
     return answer.compare("1") == 0;
 }
 
-string requestAuthCode(){
+string DVM::requestAuthCode(){
     string answer;
     bool isAvailable = false;
     while(!isAvailable){
