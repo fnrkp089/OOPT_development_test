@@ -14,10 +14,11 @@
  * -- 사용자가 선결제 코드를 입력 했을때 --
  * 인증코드 입력 -> 인증코드 확인 -> 인증코드 객체에 담겨있는 정보로 음료수 제공
  */
-DVM::DVM(const std::string& id, int x, int y)
+DVM::DVM(const string& id, int x, int y)
     : DVMId(id), coorX(x), coorY(y) {
         bool buyOrCodeInput = askBuyOrCodeInput();
         ItemManager itemManager;
+        AuthCodeManager authCodeManager;
         // 음료수 구매
         if(buyOrCodeInput){
             itemManager.showItemList();
@@ -53,7 +54,18 @@ DVM::DVM(const std::string& id, int x, int y)
         }
         // 인증코드 입력
         else{
-            
+            const string code = requestAuthCode();
+            // 인증코드 확인
+            if(authCodeManager.isValidAuthCode(code)) {
+                const Authcode authcode = authCodeManager.popAuthCode(code);
+            } else {
+                cout << "해당 인증코드가 존재하지 않습니다." << endl;
+                return;
+            }
+
+            // 인증코드 객체에 담겨있는 정보로 음료수 제공
+            itemManager.saveSelectedItem(make_pair(authCode.getItemId(), authCode.getItemNum()));
+            itemManager.showBuyResult();
         }
 
     }
@@ -111,21 +123,21 @@ pair<int,int> DVM::requestSelect() {
 void DVM::showPaymentResult(int payResult) {
     switch (payResult) {
         case 1:
-            std::cout << "결제 성공하였습니다." << std::endl;
+            cout << "결제 성공하였습니다." << endl;
             break;
         case 2:
-            std::cout << "카드 정보가 불일치합니다." << std::endl;
+            cout << "카드 정보가 불일치합니다." << endl;
             break;
         case 3:
-            std::cout << "계좌에 돈이 부족합니다." << std::endl;
+            cout << "계좌에 돈이 부족합니다." << endl;
             break;
         default:
-            std::cout << "알 수 없는 오류가 발생했습니다." << std::endl;
+            cout << "알 수 없는 오류가 발생했습니다." << endl;
             break;
     }
 }
 
-// // 선결제 결과 출력
+// 선결제 결과 출력
 void DVM::showPrepaymentResult(const AuthCode& authCode) {
     // TODO: 인증 코드 및 상태 출력
     

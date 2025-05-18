@@ -6,7 +6,7 @@ PrePaymentManager::PrePaymentManager() {
 }
 
 // 선결제 요청
-void PrePaymentManager::requestPrePayment(std::string dvmId, const AuthCode& authCode) {
+void PrePaymentManager::requestPrePayment(string dvmId, const AuthCode& authCode) {
     // 선결제 요청 구현
     // dvmId와 authCode를 사용하여 선결제 요청을 처리합니다.
 }

@@ -9,13 +9,13 @@ using namespace std;
 class Item {
 private:
     int itemId;
-    std::string name;
+    string name;
     int cost;
     int stock;
 
 public:
     // 생성자
-    Item(int itemId, const std::string& name, int price, int stock);
+    Item(int itemId, const string& name, int price, int stock);
 
     // Getter
     int getStock() const;
