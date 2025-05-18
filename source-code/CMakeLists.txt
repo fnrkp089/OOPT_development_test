@@ -24,6 +24,9 @@ add_library(dvm
     src/ItemManager.cpp
     src/PaymentManager.cpp
     src/PrePaymentManager.cpp
+    src/AltDVM.cpp
+    src/AltDVMManager.cpp
+    src/AltDVMMsgManager.cpp
 )
 
 target_include_directories(dvm PUBLIC include)
