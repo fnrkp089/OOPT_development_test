@@ -21,7 +21,7 @@ public:
     std::string askUserPrepayment();
     std::pair<int, int> requestSelect();
     void showPaymentResult(int payResult);
-    void showPrepaymentResult(const string authCode, pair<int,int> location);
+    void showPrepaymentResult(const std::string authCode, std::pair<int,int> location);
 
     // 추가 메서드
     bool askBuyOrCodeInput();

@@ -21,5 +21,10 @@ int Bank::pay(const string& cardNum, int cost) {
             else return 3; // 잔액 부족
         }
     }
-    return 2; // 카드 정보 없음
+    return 2;
+}
+
+map<string, int> Bank::getAccount()
+{
+    return account;
 }

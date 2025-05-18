@@ -14,6 +14,9 @@ public:
 
     // 결제 메서드
     int pay(std::string cardNum, int cost);
+
+    // 테스트용 메서드
+    std::map<std::string, int> getAccount();
 };
 
 #endif // BANK_HPP
