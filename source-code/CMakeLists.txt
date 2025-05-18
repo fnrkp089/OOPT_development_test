@@ -16,11 +16,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -O0")
 
 # dvm 라이브러리 정의 - 필요한 .cpp 전부 포함
 add_library(dvm
+    src/AuthCode.cpp
+    src/AuthCodeManager.cpp
+    src/Bank.cpp
     src/DVM.cpp
     src/Item.cpp
     src/ItemManager.cpp
-    src/Bank.cpp
     src/PaymentManager.cpp
+    src/PrePaymentManager.cpp
     src/AltDVM.cpp
     src/AltDVMManager.cpp
     src/AltDVMMsgManager.cpp

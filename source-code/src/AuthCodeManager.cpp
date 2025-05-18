@@ -10,7 +10,7 @@ AuthCodeManager::AuthCodeManager()
     // 빈 AuthCode 리스트 생성
 }
 
-std::string AuthCodeManager::generateCode() {
+string AuthCodeManager::generateCode() {
     // 인증코드 생성
     srand((unsigned int)time(NULL));
 
@@ -31,23 +31,23 @@ std::string AuthCodeManager::generateCode() {
 
     // code_str[11] = '\0'; // 문자열 종료
 
-    std::string code(code_str); // string으로 변환
+    string code(code_str); // string으로 변환
     
     return code;
 }
 
 // 전달용 인증코드 생성
-AuthCode AuthCodeManager::makeAuthCode(const std::string& code, int itemId, int itemNum) {
+AuthCode AuthCodeManager::makeAuthCode(const string& code, int itemId, int itemNum) {
     return AuthCode(code, itemId, itemNum);
 }
 
 // 전달받은 인증코드 저장
-void AuthCodeManager::saveAuthCode(const std::string& code, int itemId, int itemNum) {
+void AuthCodeManager::saveAuthCode(const string& code, int itemId, int itemNum) {
     authCodeList.emplace_back(code, itemId, itemNum);
 }
 
 // 해당 인증코드가 존재하는지 확인
-bool AuthCodeManager::isValidAuthCode(const std::string& code) {
+bool AuthCodeManager::isValidAuthCode(const string& code) {
     for (int iter = 0; iter<authCodeList.size(); iter++) {
         if (authCodeList[iter].getCode() == code) {
             return true;
@@ -57,7 +57,7 @@ bool AuthCodeManager::isValidAuthCode(const std::string& code) {
 }
 
 // 사용된 인증 코드 삭제
-AuthCode AuthCodeManager::popAuthCode(const std::string& code) {
+AuthCode AuthCodeManager::popAuthCode(const string& code) {
     for (auto iter = authCodeList.begin(); iter != authCodeList.end(); ++iter) {
         if (iter->getCode() == code) {
             AuthCode temp = *iter;

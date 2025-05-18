@@ -8,7 +8,7 @@ using namespace std;
 
 class ItemManager {
 private:
-    std::vector<Item> itemList;
+    vector<Item> itemList;
     int selectedItemId;
     int selectedItemNum;
 

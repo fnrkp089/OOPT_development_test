@@ -30,10 +30,10 @@ ItemManager::ItemManager()
 // 아이템 목록 보여주기
 void ItemManager::showItemList() const {
     for(int id=0; id<itemList.size(); id++){
-        std::cout << "ID: " << id+1
+        cout << "ID: " << id+1
                 << ", Name: " << itemList[id].getName()
                 << ", Price: " << itemList[id].getCost(1)
-                << ", Stock: " << itemList[id].getStock() << std::endl;
+                << ", Stock: " << itemList[id].getStock() << endl;
     }
 }
 
@@ -58,7 +58,7 @@ void ItemManager::minusStock() {
 
 // 구매 결과 출력
 void ItemManager::showBuyResult() {
-    cout << itemList[selectedItemId-1].getName() << " " << selectedItemNum << "개 구매되었습니다." << std::endl;
+    cout << itemList[selectedItemId-1].getName() << " " << selectedItemNum << "개 구매되었습니다." << endl;
 }
 
 int ItemManager::getPaymentAmount(){

@@ -1,5 +1,5 @@
-#ifndef PrePaymentManager_H
-#define PrePaymentManager_H
+#ifndef PREPAYMENTMANAGER_H
+#define PREPAYMENTMANAGER_H
 
 #include "Bank.hpp"
 #include "AuthCodeManager.hpp"
@@ -15,8 +15,8 @@ public:
     PrePaymentManager();
 
     // 메서드
-    void requestPrePayment(std::string dvmId, const AuthCode& authCode); // 선결제 요청
+    void requestPrePayment(string dvmId, const AuthCode& authCode); // 선결제 요청
     void acceptPrePayment(const AuthCode& authCode); // 선결제 수락
 };
 
-#endif // PrePaymentManager_H
+#endif // PREPAYMENTMANAGER_H
