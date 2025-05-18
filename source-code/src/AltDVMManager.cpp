@@ -4,7 +4,7 @@
 
 using namespace std;
 
-AltDVMManager::AltDVMManager(ItemManager* im) : itemManager(im) {}
+AltDVMManager::AltDVMManager(ItemManager im) : itemManager(im) {}
 
 void AltDVMManager::addDVM(const string& dvmId, int coorX, int coorY, const string& availability) {
     if (availability == "T") {
