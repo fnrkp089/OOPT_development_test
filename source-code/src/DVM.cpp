@@ -49,7 +49,14 @@ DVM::DVM(const string& id, int x, int y)
                     string authCode = authCodeManager.generateCode();
                     string dvmID = altDVMManager.getSelectedDVM();
                     msgManager.requestPrepayment(dvmID, authCodeManager.makeAuthCode(authCode, itemManager.getSelectedItemId(),itemManager.getSelectedItemNum()));
-                    showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
+                    int payResult = paymentManager.requestPayment(itemManager.getPaymentAmount());
+                    showPaymentResult(payResult);
+                    // 결제 성공한 경우
+                    if(payResult == 1){
+                        showPrepaymentResult(authCode, altDVMManager.getAltDVMLocation());
+                    }
+                    // 결제 실패한 경우
+                    else return;
                 }
                 // 선결제 X
                 else{
