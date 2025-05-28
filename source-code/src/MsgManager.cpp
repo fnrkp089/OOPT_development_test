@@ -1,6 +1,7 @@
 #include "MsgManager.hpp"
 #include <json.hpp>
 #include <iostream>
+#include <cctype>
 
 using json = nlohmann::json;
 
@@ -58,7 +59,18 @@ std::string MsgManager::createResponsePrepayment(const std::string& dstId, const
 // 메시지 전송
 void MsgManager::sendTo(const std::string& dstId, const std::string& msg) {
     int basePort = 5000;
-    int dvmNum = std::stoi(dstId.substr(1)); // DVM id에서 숫자 추출("T2" → 2)
+    int dvmNum = 0;
+    try {
+        if (!dstId.empty() && !std::isdigit(dstId.front())) {
+            dvmNum = std::stoi(dstId.substr(1));
+        } else {
+            dvmNum = std::stoi(dstId);
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "[MsgManager] Invalid dstId: " << dstId << "\n";
+        return;
+    }
+
     int targetPort = basePort + dvmNum;
     std::string response;
     p2pClient->sendMessageToPeer("127.0.0.1", targetPort, msg, response);

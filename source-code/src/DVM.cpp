@@ -59,8 +59,14 @@ void DVM::handleBuyFlow() {
         }
     // 재고가 부족한 경우
     } else {
-        string tempMsg = msgManager.createRequestItemStockAndLocation(to_string(itemManager.getSelectedItemId()), itemManager.getSelectedItemNum());
-        msgManager.sendTo(0,tempMsg);
+        string tempMsg = msgManager.createRequestItemStockAndLocation(
+            to_string(itemManager.getSelectedItemId()),
+            itemManager.getSelectedItemNum());
+
+        for (const auto& dvm : altDVMManager.getAltDVMList()) {
+            msgManager.sendTo(dvm.getId(), tempMsg);
+        }
+
         altDVMManager.selectAltDVM(coorX, coorY);
 
         // 선결제 원하는 경우
