@@ -11,13 +11,13 @@ private:
     int port;
     std::atomic<bool> running;
     std::thread serverThread;
+    
+    using RequestHandler = std::function<std::string(const std::string&)>;
     RequestHandler handleRequest;
 
     void listenLoop();
     void handleClient(SOCKET clientSocket);
 public:
-    using RequestHandler = std::function<std::string(const std::string&)>;
-
     P2PServer(int port, RequestHandler handler);
     ~P2PServer();
 

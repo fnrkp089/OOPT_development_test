@@ -16,7 +16,7 @@ public:
 
     // 메서드
     void showItemList() const;
-    void saveSelectedItem(std::pair<int, int> saveInfo); // 매개변수 추가
+    void saveSelectedItem(std::pair<int, int> saveInfo);
     bool isEnough() const;
     void minusStock();
 

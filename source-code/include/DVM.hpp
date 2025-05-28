@@ -1,31 +1,41 @@
-#ifndef DVM_H
-#define DVM_H
-
+#pragma once
 #include "ItemManager.hpp"
 #include "PaymentManager.hpp"
 #include "AuthCodeManager.hpp"
-#include "MsgManager.hpp"
 #include "AltDVMManager.hpp"
+#include "MsgManager.hpp"
 #include <string>
-#include <algorithm>
-
 
 class DVM {
 private:
     std::string DVMId;
     int coorX;
     int coorY;
+    int port;
+
+    ItemManager itemManager;
+    PaymentManager paymentManager;
+    AuthCodeManager authCodeManager;
+    AltDVMManager altDVMManager;
+
+    P2PClient p2pClient;
+    MsgManager msgManager;
+
+    P2PServer p2pServer;
 
 public:
-    DVM(const std::string& id, int x, int y);
+    DVM(const std::string& id, int x, int y, int port); // 생성자
+    void run(); // 프로그램 메인 흐름
+
+private:
+    bool askBuyOrCodeInput();
     std::string askUserPrepayment();
     std::pair<int, int> requestSelect();
     void showPaymentResult(int payResult);
-    void showPrepaymentResult(const std::string authCode, std::pair<int,int> location);
-
-    // 추가 메서드
-    bool askBuyOrCodeInput();
+    void showPrepaymentResult(const std::string& authCode, std::pair<int,int> location);
     std::string requestAuthCode();
-};
 
-#endif // DVM_H
+    void handleBuyFlow();
+    void handleAuthCodeFlow();
+
+};
