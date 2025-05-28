@@ -19,7 +19,8 @@
           "source-code/src/AltDVM.cpp",
           "source-code/src/AltDVMManager.cpp",
           "source-code/src/MsgManager.cpp",
-          "source-code/src/SocketClient.cpp",
+          "source-code/src/P2PClient.cpp",
+          "source-code/src/P2PServer.cpp",
           "-o",
           "OOPT_TEST"
         ],
