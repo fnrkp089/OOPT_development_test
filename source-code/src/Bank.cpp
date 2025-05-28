@@ -15,7 +15,7 @@ int Bank::pay(const string cardNum, int cost) {
     for(auto& iter : account){
         if(iter.first == cardNum){
             if(iter.second >= cost){
-                //iter.second -= cost; // 잔액 차감
+                iter.second -= cost; // 잔액 차감
                 return 1; // 결제 성공
             }
             else return 3; // 잔액 부족
