@@ -11,6 +11,16 @@
  */
 P2PClient::P2PClient()
 {
+    // Initialize WinSock for client operations
+    WSAData wsa;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+        std::cerr << "[P2PClient] WSAStartup failed\n";
+    }
+}
+
+P2PClient::~P2PClient()
+{
+    WSACleanup();
 }
 bool P2PClient::sendMessageToPeer(const std::string &ip, int port, const std::string &msg, std::string &response)
 {
