@@ -22,6 +22,7 @@ public:
     void minusStock(int itemId, int itemNum);
     void showBuyResult();
     int getPaymentAmount();
+    int getStock(const std::string& itemCode) const;
     
     // 구글테스트용 메서드
     int getSelectedItemId();

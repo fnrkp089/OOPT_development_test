@@ -1,6 +1,7 @@
 #include "DVM.hpp"
 #include <iostream>
 #include <algorithm>
+#include <winsock2.h>
 
 using namespace std;
 
@@ -20,8 +21,17 @@ using namespace std;
 DVM::DVM(const string& id, int x, int y, int port)
     : DVMId(id), coorX(x), coorY(y), port(port),
         msgManager(&itemManager, &authCodeManager, &altDVMManager, &p2pClient, id),
-        p2pServer(port, [this](const std::string& msg)) {
-    run();
+        p2pServer(port, [this](const std::string& msg){ return msgManager.receive(msg); }) {
+    WSAData wsa;
+    if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
+        std::cerr << "WSAStartup failed" << std::endl;
+    }
+    p2pServer.start();
+}
+
+DVM::~DVM() {
+    p2pServer.stop();
+    WSACleanup();
 }
 
 void DVM::run() {

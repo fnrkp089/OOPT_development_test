@@ -92,3 +92,11 @@ int ItemManager::getSelectedItemNum(){
 vector<Item> ItemManager::getItemList(){
     return itemList;
 }
+
+int ItemManager::getStock(const std::string& itemCode) const {
+    int id = std::stoi(itemCode);
+    if(id >= 1 && id <= itemList.size()) {
+        return itemList[id-1].getStock();
+    }
+    return 0;
+}

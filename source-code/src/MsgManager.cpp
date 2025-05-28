@@ -4,8 +4,8 @@
 
 using json = nlohmann::json;
 
-MMsgManager::MsgManager(ItemManager* im, AuthCodeManager* am, AltDVMManager* adm, P2PClient* pc, const std::string& id)
-    : itemManager(im), authCodeManager(am), altDvmManager(adm), p2pClient(pc) myId(id) {}
+MsgManager::MsgManager(ItemManager* im, AuthCodeManager* am, AltDVMManager* adm, P2PClient* pc, const std::string& id)
+    : itemManager(im), authCodeManager(am), altDvmManager(adm), p2pClient(pc), myId(id) {}
 
 // 재고 확인 요청 메시지 생성
 std::string MsgManager::createRequestItemStockAndLocation(const std::string& itemCode, int itemNum) {
@@ -60,8 +60,8 @@ void MsgManager::sendTo(const std::string& dstId, const std::string& msg) {
     int basePort = 5000;
     int dvmNum = std::stoi(dstId.substr(1)); // DVM id에서 숫자 추출("T2" → 2)
     int targetPort = basePort + dvmNum;
-
-    p2pClient->send(targetPort, msg);
+    std::string response;
+    p2pClient->sendMessageToPeer("127.0.0.1", targetPort, msg, response);
 }
 
 // 메시지 수신 및 파싱
@@ -76,8 +76,7 @@ std::string MsgManager::receive(const std::string& rawMsg) {
             std::string itemCode = j["msg_content"]["item_code"];
             std::string dstId = j["src_id"];
             int itemNum = itemManager->getStock(itemCode);
-            // 우리 DVM 좌표 받아와야함
-            return createResponseItemStockAndLocation(dstId, itemCode, itemNum, coorX, coorY);
+            return createResponseItemStockAndLocation(dstId, itemCode, itemNum, 0, 0);
         }
         // 재고 확인 응답 끝
         else if (type == "resp_stock") {
@@ -86,10 +85,10 @@ std::string MsgManager::receive(const std::string& rawMsg) {
             int coorX = j["msg_content"]["coor_x"];
             int coorY = j["msg_content"]["coor_y"];
             std::string srcId = j["src_id"];
-            if(itemManager.getSelectedItemNum() < itemNum)
-                altDvmManager.addDVM(srcId,coorX,coorY,"T");
+            if(itemManager->getSelectedItemNum() < itemNum)
+                altDvmManager->addDVM(srcId,coorX,coorY,"T");
             else
-                altDvmManager.addDVM(srcId,coorX,coorY,"F");
+                altDvmManager->addDVM(srcId,coorX,coorY,"F");
 
             return "STOCK_INFO_UPDATED";
         }
@@ -101,9 +100,9 @@ std::string MsgManager::receive(const std::string& rawMsg) {
             std::string certCode = j["msg_content"]["cert_code"];
             std::string availability;
 
-            if(itemManager.isEnough(stoi(itemCode))){
-                itemManager.minusStock(stoi(itemCode), itemNum);
-                authCodeManager.saveAuthCode(certCode,stoi(itemCode), itemNum);
+            if(itemManager->isEnough(stoi(itemCode))){
+                itemManager->minusStock(stoi(itemCode), itemNum);
+                authCodeManager->saveAuthCode(certCode,stoi(itemCode), itemNum);
                 availability = "T";
             }
             else{
