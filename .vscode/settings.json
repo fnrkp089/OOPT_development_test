@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "C:/OOPT_development/source-code",
+    "cmake.sourceDirectory": "/Users/j3rry3/OOPT_development/googletest",
     "files.associations": {
         "__bit_reference": "cpp",
         "__locale": "cpp",
