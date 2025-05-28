@@ -25,7 +25,8 @@ private:
     P2PServer p2pServer;
 
 public:
-    DVM(const std::string& id, int x, int y, int port); // 생성자
+    DVM(const std::string& id, int x, int y, int port = 0); // 생성자
+    ~DVM();
     void run(); // 프로그램 메인 흐름
 
 private:
