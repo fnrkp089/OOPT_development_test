@@ -15,6 +15,13 @@ P2PServer::~P2PServer() {
 void P2PServer::start() {
     if (running) return;
 
+    // Initialize WinSock
+    WSAData wsa;
+    if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+        std::cerr << "[P2PServer] WSAStartup failed\n";
+        return;
+    }
+
     listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (listenSocket == INVALID_SOCKET) {
         std::cerr << "[P2PServer] socket creation failed\n";
@@ -58,6 +65,9 @@ void P2PServer::stop() {
     if (serverThread.joinable()) {
         serverThread.join();
     }
+
+    // Clean up WinSock
+    WSACleanup();
 
     std::cout << "[P2PServer] Stopped.\n";
 }
