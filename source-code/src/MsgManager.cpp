@@ -1,5 +1,5 @@
 #include "MsgManager.hpp"
-#include <nlohmann/json.hpp>
+#include <json.hpp>
 #include <iostream>
 
 using json = nlohmann::json;
@@ -70,25 +70,30 @@ std::string MsgManager::receive(const std::string& rawMsg) {
         json j = json::parse(rawMsg);
         std::string type = j["msg_type"];
 
+        // 재고 확인 요청 
+        // dvm에서 좌표 값을 받아올 방법이 없음
         if (type == "req_stock") {
             std::string itemCode = j["msg_content"]["item_code"];
             std::string dstId = j["src_id"];
             int itemNum = itemManager->getStock(itemCode);
-            int coorX = altDvmManager->getCoorX();
-            int coorY = altDvmManager->getCoorY();
+            // 우리 DVM 좌표 받아와야함
             return createResponseItemStockAndLocation(dstId, itemCode, itemNum, coorX, coorY);
         }
+        // 재고 확인 응답 끝
         else if (type == "resp_stock") {
             std::string itemCode = j["msg_content"]["item_code"];
             int itemNum = j["msg_content"]["item_num"];
             int coorX = j["msg_content"]["coor_x"];
             int coorY = j["msg_content"]["coor_y"];
             std::string srcId = j["src_id"];
-
-            altDvmManager->updateStockInfo(srcId, itemCode, itemNum, coorX, coorY);
+            if(itemManager.getSelectedItemNum() < itemNum)
+                altDvmManager.addDVM(srcId,coorX,coorY,"T");
+            else
+                altDvmManager.addDVM(srcId,coorX,coorY,"F");
 
             return "STOCK_INFO_UPDATED";
         }
+        // 선결제 요청 끝
         else if (type == "req_prepay") {
             std::string dstId = j["src_id"];
             std::string itemCode = j["msg_content"]["item_code"];
@@ -96,16 +101,18 @@ std::string MsgManager::receive(const std::string& rawMsg) {
             std::string certCode = j["msg_content"]["cert_code"];
             std::string availability;
 
-            if(itemNum <= itemManager->getStock(itemCode)) { // 해당 itemCode에 해당하는 음료수의 수량과 비교
-                itemManager->minusStock(itemCode, itemNum); // 해당 음료수 재고 차감
-                authCodeManager->saveAuthCode(certCode, itemCode, itemNum); // 인증코드 저장
+            if(itemManager.isEnough(stoi(itemCode))){
+                itemManager.minusStock(stoi(itemCode), itemNum);
+                authCodeManager.saveAuthCode(certCode,stoi(itemCode), itemNum);
                 availability = "T";
-            } else {
+            }
+            else{
                 availability = "F";
             }
 
             return createResponsePrepayment(dstId, itemCode, itemNum, availability);
         }
+        // 선결제 응답
         else if (type == "resp_prepay") {
             std::string availability = j["msg_content"]["availability"];
 

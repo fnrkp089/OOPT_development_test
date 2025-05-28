@@ -4,6 +4,7 @@
 #include "AuthCodeManager.hpp"
 #include "AltDVMManager.hpp"
 #include "MsgManager.hpp"
+#include "P2PServer.hpp"
 #include <string>
 
 class DVM {
@@ -34,6 +35,7 @@ private:
     void showPaymentResult(int payResult);
     void showPrepaymentResult(const std::string& authCode, std::pair<int,int> location);
     std::string requestAuthCode();
+    std::pair<int,int> getDVMLocation();
 
     void handleBuyFlow();
     void handleAuthCodeFlow();

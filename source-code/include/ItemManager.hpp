@@ -14,16 +14,15 @@ public:
     // 생성자
     ItemManager();
 
-    // 메서드
     void showItemList() const;
     void saveSelectedItem(std::pair<int, int> saveInfo);
     bool isEnough() const;
+    bool isEnough(int itemId) const;
     void minusStock();
-
-    // 추가 메서드
+    void minusStock(int itemId, int itemNum);
     void showBuyResult();
     int getPaymentAmount();
-
+    
     // 구글테스트용 메서드
     int getSelectedItemId();
     int getSelectedItemNum();
