@@ -53,9 +53,23 @@ bool ItemManager::isEnough() const {
         return false;
 }
 
+// 인자로 받아오는 값의 재고가 충분한지 확인
+bool ItemManager::isEnough(int itemId) const
+{
+    if(itemList[itemId-1].getStock() >= selectedItemNum)
+        return true;
+    else
+        return false;
+}
+
 // 선택된 아이템 재고 감소
 void ItemManager::minusStock() {
     itemList[selectedItemId-1].decreaseStock(selectedItemNum);
+}
+
+void ItemManager::minusStock(int itemId, int itemNum)
+{
+    itemList[itemId-1].decreaseStock(itemNum);
 }
 
 // 구매 결과 출력

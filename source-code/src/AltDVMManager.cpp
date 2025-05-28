@@ -21,7 +21,8 @@ void AltDVMManager::selectAltDVM(int currX, int currY) {
 
     int minDist = numeric_limits<int>::max();
     for (auto& dvm : DVMList) {
-        auto [x, y] = dvm.getLocation();
+        int x = dvm.getLocation().first;
+        int y = dvm.getLocation().second;
         int dist = (currX - x) * (currX - x) + (currY - y) * (currY - y);
         if (dist < minDist) {
             minDist = dist;

@@ -19,9 +19,8 @@ using namespace std;
  */
 DVM::DVM(const string& id, int x, int y, int port)
     : DVMId(id), coorX(x), coorY(y), port(port),
-        pc(),
         msgManager(&itemManager, &authCodeManager, &altDVMManager, &p2pClient, id),
-        server(port, [this](const std::string& msg) { return msgManager.receive(msg); }) {
+        p2pServer(port, [this](const std::string& msg)) {
     run();
 }
 
@@ -50,7 +49,8 @@ void DVM::handleBuyFlow() {
         }
     // 재고가 부족한 경우
     } else {
-        msgManager.requestItemStockAndLocation();
+        string tempMsg = msgManager.createRequestItemStockAndLocation(to_string(itemManager.getSelectedItemId()), itemManager.getSelectedItemNum());
+        msgManager.sendTo(0,tempMsg);
         altDVMManager.selectAltDVM(coorX, coorY);
 
         // 선결제 원하는 경우
@@ -58,13 +58,7 @@ void DVM::handleBuyFlow() {
             string authCode = authCodeManager.generateCode();
             string dvmID = altDVMManager.getSelectedDVM();
 
-            msgManager.requestPrepayment(
-                dvmID,
-                authCodeManager.makeAuthCode(authCode,
-                    itemManager.getSelectedItemId(),
-                    itemManager.getSelectedItemNum())
-            );
-
+            // if(msgManager.receive())
             int payResult = paymentManager.requestPayment(itemManager.getPaymentAmount());
             showPaymentResult(payResult);
 
@@ -169,4 +163,9 @@ string DVM::requestAuthCode() {
         cout << "5자리 인증코드를 입력해주세요." << endl;
     }
     return code;
+}
+
+pair<int, int> DVM::getDVMLocation()
+{
+    return {coorX,coorY};
 }

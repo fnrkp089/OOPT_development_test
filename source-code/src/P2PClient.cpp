@@ -1,5 +1,4 @@
 #include <P2PClient.hpp>
-
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <string>
@@ -7,8 +6,15 @@
 
 #pragma comment(lib, "ws2_32.lib")  // WinSock 라이브러리 링크
 
-bool P2PClient::sendMessageToPeer(const std::string& ip, int port, const std::string& msg, std::string& response) {
-    response.clear()
+/**
+ * 
+ */
+P2PClient::P2PClient()
+{
+}
+bool P2PClient::sendMessageToPeer(const std::string &ip, int port, const std::string &msg, std::string &response)
+{
+    response.clear();
 
     SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock == INVALID_SOCKET) {

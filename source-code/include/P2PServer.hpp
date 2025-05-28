@@ -11,7 +11,7 @@ private:
     int port;
     std::atomic<bool> running;
     std::thread serverThread;
-    
+
     using RequestHandler = std::function<std::string(const std::string&)>;
     RequestHandler handleRequest;
 
