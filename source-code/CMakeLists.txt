@@ -26,7 +26,8 @@ add_library(dvm
     src/AltDVM.cpp
     src/AltDVMManager.cpp
     src/MsgManager.cpp
-    src/SocketClient.cpp
+    src/P2PClient.cpp
+    src/P2PServer.cpp
 )
 
 target_include_directories(dvm PUBLIC include)
